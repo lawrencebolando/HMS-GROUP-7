@@ -3,86 +3,87 @@
 <?= $this->section('content') ?>
 <div class="gradient-bg min-h-screen">
     <!-- Header -->
-    <header class="px-6 py-4 flex items-center justify-between">
+    <header class="px-6 py-4 flex items-center justify-between relative z-10">
         <!-- Logo and Brand -->
-        <div class="flex items-center space-x-2">
-            <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3V8zM4 6h10v2H4V6zm0 4h10v2H4v-2zm0 4h7v2H4v-2z"/>
-                <path d="M2 4h14v16H2V4zm2 2v12h10V6H4z" fill="rgba(147, 51, 234, 0.1)"/>
-            </svg>
-            <h1 class="text-xl font-bold text-gray-800">GLOBAL HOSPITALS</h1>
+        <div class="flex items-center space-x-3">
+            <img src="<?= base_url('images/logo.svg') ?>" alt="St. Elizabeth Hospital Logo" class="w-12 h-12 rounded-full">
+            <h1 class="text-xl font-bold text-white">St. Elizabeth Hospital, Inc.</h1>
         </div>
         
         <!-- Navigation -->
         <nav class="flex items-center space-x-6">
-            <a href="<?= site_url('/') ?>" class="text-gray-800 hover:text-blue-600 font-medium">Home</a>
-            <a href="#" class="text-gray-800 hover:text-blue-600 font-medium">About Us</a>
-            <a href="#" class="text-gray-800 hover:text-blue-600 font-medium">Contact</a>
+            <a href="<?= site_url('/') ?>" class="text-white font-medium hover:underline">Home</a>
+            <a href="#" class="text-white font-medium hover:underline">About Us</a>
+            <a href="#" class="text-white font-medium hover:underline">Contact</a>
         </nav>
     </header>
 
     <!-- Main Content - Login Card -->
-    <div class="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
+    <div class="flex items-center justify-center min-h-[calc(100vh-80px)] p-4 relative z-10">
         <div class="w-full max-w-md">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <!-- Role Selection -->
-                <div class="px-6 pt-6 pb-4 flex justify-end">
-                    <div class="flex rounded-full overflow-hidden border border-gray-200">
-                        <button id="patientBtn" class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-full">
-                            Patient
-                        </button>
-                        <button id="doctorBtn" class="px-4 py-2 text-sm font-medium text-blue-600 bg-white rounded-full">
-                            Doctor
-                        </button>
+            <div class="glass-card rounded-2xl overflow-hidden">
+                <!-- Title Section with Icon -->
+                <div class="px-8 pt-8 pb-6 bg-gradient-to-r from-blue-500 to-purple-600">
+                    <div class="flex items-center space-x-3 mb-2">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-circle text-white text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
                     </div>
-                </div>
-
-                <!-- Title -->
-                <div class="px-6 pb-4">
-                    <h2 class="text-xl font-bold text-gray-800" id="loginTitle">Login as Patient</h2>
+                    <p class="text-blue-100 text-sm">Sign in to access your account</p>
                 </div>
 
                 <!-- Error Message -->
                 <?php if (session()->getFlashdata('error')): ?>
-                    <div class="px-6 pt-4">
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline"><?= esc(session()->getFlashdata('error')) ?></span>
+                    <div class="px-8 pt-6">
+                        <div class="bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded-r-lg" role="alert">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <span><?= esc(session()->getFlashdata('error')) ?></span>
+                            </div>
                         </div>
                     </div>
                 <?php endif; ?>
 
                 <!-- Login Form -->
-                <form class="px-6 pb-6" action="auth/authenticate" method="POST" id="loginForm">
+                <form class="px-8 pb-8 pt-6" action="auth/authenticate" method="POST" id="loginForm">
                     <?= csrf_field() ?>
-                    <input type="hidden" name="role" id="roleInput" value="patient">
+                    <input type="hidden" name="role" id="roleInput" value="admin">
                     
                     <!-- Email Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-800 text-sm font-medium mb-2" for="email">
-                            Email
+                    <div class="mb-5">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
+                            Email Address
                         </label>
-                        <input 
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            id="email" 
-                            type="email" 
-                            name="email" 
-                            placeholder="you@example.com"
-                            required
-                        >
+                        <div class="input-group">
+                            <input 
+                                class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                id="email" 
+                                type="email" 
+                                name="email" 
+                                placeholder="you@example.com"
+                                required
+                            >
+                            <i class="fas fa-envelope input-icon"></i>
+                        </div>
                     </div>
                     
                     <!-- Password Field -->
-                    <div class="mb-4">
-                        <label class="block text-gray-800 text-sm font-medium mb-2" for="password">
+                    <div class="mb-5">
+                        <label class="block text-gray-700 text-sm font-semibold mb-2" for="password">
                             Password
                         </label>
-                        <input 
-                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            id="password" 
-                            type="password" 
-                            name="password" 
-                            required
-                        >
+                        <div class="input-group">
+                            <input 
+                                class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                id="password" 
+                                type="password" 
+                                name="password" 
+                                placeholder="Enter your password"
+                                required
+                            >
+                            <i class="fas fa-lock input-icon"></i>
+                        </div>
                     </div>
                     
                     <!-- Remember Me & Forgot Password -->
@@ -92,14 +93,14 @@
                                 id="remember_me" 
                                 name="remember_me" 
                                 type="checkbox" 
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded cursor-pointer"
                             >
-                            <label for="remember_me" class="ml-2 block text-sm text-gray-800">
+                            <label for="remember_me" class="ml-2 block text-sm text-gray-700 cursor-pointer">
                                 Remember me
                             </label>
                         </div>
                         <div class="text-sm">
-                            <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
+                            <a href="#" class="font-semibold text-purple-600 hover:text-purple-700 transition-colors">
                                 Forgot password?
                             </a>
                         </div>
@@ -108,16 +109,19 @@
                     <!-- Login Button -->
                     <button 
                         type="submit" 
-                        class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium transition-colors"
+                        class="btn-login w-full text-white py-3.5 px-4 rounded-xl font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 relative z-10"
                     >
-                        Login
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Sign In
+                        </span>
                     </button>
                     
                     <!-- Register Link -->
-                    <div class="mt-4 text-center text-sm">
-                        <span class="text-gray-800">Don't have an account?</span>
-                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500 ml-1">
-                            Register
+                    <div class="mt-6 text-center">
+                        <span class="text-gray-600 text-sm">Don't have an account?</span>
+                        <a href="#" class="font-semibold text-purple-600 hover:text-purple-700 ml-1 transition-colors">
+                            Create Account
                         </a>
                     </div>
                 </form>
@@ -126,31 +130,4 @@
     </div>
 </div>
 
-<script>
-    // Role toggle functionality
-    const patientBtn = document.getElementById('patientBtn');
-    const doctorBtn = document.getElementById('doctorBtn');
-    const loginTitle = document.getElementById('loginTitle');
-    const roleInput = document.getElementById('roleInput');
-
-    patientBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        patientBtn.classList.remove('text-blue-600', 'bg-white');
-        patientBtn.classList.add('text-white', 'bg-blue-500');
-        doctorBtn.classList.remove('text-white', 'bg-blue-500');
-        doctorBtn.classList.add('text-blue-600', 'bg-white');
-        loginTitle.textContent = 'Login as Patient';
-        roleInput.value = 'patient';
-    });
-
-    doctorBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        doctorBtn.classList.remove('text-blue-600', 'bg-white');
-        doctorBtn.classList.add('text-white', 'bg-blue-500');
-        patientBtn.classList.remove('text-white', 'bg-blue-500');
-        patientBtn.classList.add('text-blue-600', 'bg-white');
-        loginTitle.textContent = 'Login as Doctor';
-        roleInput.value = 'doctor';
-    });
-</script>
 <?= $this->endSection() ?>

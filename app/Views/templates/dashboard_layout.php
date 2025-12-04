@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'HealthMS - Dashboard' ?></title>
+    <title><?= $title ?? 'St. Elizabeth Hospital, Inc. - Dashboard' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -86,17 +86,15 @@
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white sidebar-transition">
-            <!-- User Profile Section -->
-            <div class="p-4 border-b border-gray-700">
+            <!-- Hospital Logo Section -->
+            <div class="p-4 border-b border-blue-700">
                 <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-2">
-                        <i class="fas fa-plus text-white text-2xl"></i>
-                    </div>
+                    <img src="<?= base_url('images/logo.svg') ?>" alt="St. Elizabeth Hospital Logo" class="w-16 h-16 rounded-full mb-2">
                     <div class="text-center">
-                        <div class="font-semibold"><?= esc($user['name'] ?? 'User') ?></div>
+                        <div class="font-semibold text-sm text-white">St. Elizabeth Hospital</div>
                         <div class="flex items-center justify-center mt-1">
                             <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                            <span class="text-sm text-gray-300"><?= esc(ucfirst($user['role'] ?? 'User')) ?></span>
+                            <span class="text-xs text-gray-300"><?= esc(ucfirst($user['role'] ?? 'Admin')) ?></span>
                         </div>
                     </div>
                 </div>
@@ -197,25 +195,41 @@
                         <button id="sidebarToggle" class="mr-4 text-gray-600 hover:text-gray-900">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-                        <h1 class="text-xl font-bold text-gray-800">HealthMS</h1>
+                        <img src="<?= base_url('images/logo.svg') ?>" alt="Logo" class="w-8 h-8 mr-3 rounded-full">
+                        <h1 class="text-xl font-bold text-gray-800">St. Elizabeth Hospital, Inc.</h1>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center text-gray-600">
                             <i class="fas fa-flag mr-2"></i>
                             <span>Admin</span>
                         </div>
-                        <div class="relative group">
-                            <div class="flex items-center text-gray-600 cursor-pointer">
+                        <div class="relative" id="userDropdown">
+                            <button onclick="toggleDropdown()" class="flex items-center text-gray-600 cursor-pointer hover:text-gray-900">
                                 <i class="fas fa-user-circle mr-2 text-xl"></i>
-                                <span><?= esc($user['name'] ?? 'User') ?></span>
+                                <span>Admin</span>
                                 <i class="fas fa-chevron-down ml-2 text-xs"></i>
-                            </div>
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                                <a href="<?= base_url('logout') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            </button>
+                            <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200 hidden">
+                                <a href="<?= base_url('logout') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                 </a>
                             </div>
                         </div>
+                        <script>
+                            function toggleDropdown() {
+                                const menu = document.getElementById('dropdownMenu');
+                                menu.classList.toggle('hidden');
+                            }
+                            
+                            // Close dropdown when clicking outside
+                            document.addEventListener('click', function(event) {
+                                const dropdown = document.getElementById('userDropdown');
+                                const menu = document.getElementById('dropdownMenu');
+                                if (!dropdown.contains(event.target)) {
+                                    menu.classList.add('hidden');
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </header>
@@ -228,8 +242,8 @@
             <!-- Footer -->
             <footer class="bg-white border-t border-gray-200 px-6 py-4">
                 <div class="flex justify-between text-sm text-gray-600">
-                    <div>Copyright © 2016-2017 Suvidha Software Solutions.</div>
-                    <div>HMS 1.0</div>
+                    <div>© <?= date('Y') ?> St. Elizabeth Hospital, Inc. All rights reserved.</div>
+                    <div>HMS v1.0</div>
                 </div>
             </footer>
         </div>

@@ -10,6 +10,7 @@ $routes->get('login', 'Auth::login');
 $routes->post('auth/authenticate', 'Auth::authenticate');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Dashboard::index');
+$routes->get('update-admin-name', 'UpdateAdmin::index');
 
 // Patient Management Routes
 $routes->get('patients', 'Patients::index');
@@ -26,6 +27,14 @@ $routes->post('doctors/store', 'Doctors::store');
 $routes->get('doctors/edit/(:num)', 'Doctors::edit/$1');
 $routes->post('doctors/update/(:num)', 'Doctors::update/$1');
 $routes->get('doctors/delete/(:num)', 'Doctors::delete/$1');
+
+// Doctor Types Routes
+$routes->get('doctor-types', 'DoctorTypes::index');
+$routes->get('doctor-types/create', 'DoctorTypes::create');
+$routes->post('doctor-types/store', 'DoctorTypes::store');
+$routes->get('doctor-types/edit/(:num)', 'DoctorTypes::edit/$1');
+$routes->post('doctor-types/update/(:num)', 'DoctorTypes::update/$1');
+$routes->get('doctor-types/delete/(:num)', 'DoctorTypes::delete/$1');
 
 // Department Management Routes
 $routes->get('departments', 'Departments::index');

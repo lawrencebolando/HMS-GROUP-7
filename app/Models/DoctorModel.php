@@ -4,25 +4,24 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PatientModel extends Model
+class DoctorModel extends Model
 {
-    protected $table            = 'patients';
+    protected $table            = 'doctors';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'patient_id',
-        'first_name',
-        'last_name',
-        'email',
+        'doctor_id',
+        'full_name',
+        'specialization',
+        'department_id',
         'phone',
-        'date_of_birth',
-        'gender',
-        'address',
-        'blood_group',
-        'room',
+        'email',
+        'years_of_experience',
+        'schedule',
+        'rating',
         'status',
         'created_at',
         'updated_at'
@@ -41,16 +40,15 @@ class PatientModel extends Model
     protected $deletedField  = 'deleted_at';
 
     protected $validationRules      = [
-        'first_name' => 'required|min_length[2]|max_length[100]',
-        'last_name' => 'required|min_length[2]|max_length[100]',
-        'email' => 'permit_empty|valid_email',
+        'full_name' => 'required|min_length[2]|max_length[100]',
+        'specialization' => 'required|min_length[2]|max_length[100]',
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
     protected $allowCallbacks = true;
-    protected $beforeInsert   = ['generatePatientId'];
+    protected $beforeInsert   = ['generateDoctorId'];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate     = [];
@@ -59,24 +57,29 @@ class PatientModel extends Model
     protected $beforeDelete    = [];
     protected $afterDelete     = [];
 
-    protected function generatePatientId(array $data)
+    protected function generateDoctorId(array $data)
     {
-        // Always generate a unique patient_id if not provided
-        if (!isset($data['data']['patient_id']) || empty($data['data']['patient_id'])) {
-            // Generate unique patient ID
+        if (!isset($data['data']['doctor_id']) || empty($data['data']['doctor_id'])) {
             do {
-                $patientId = 'PAT-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
-                $exists = $this->where('patient_id', $patientId)->first();
+                $doctorId = 'DOC-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+                $exists = $this->where('doctor_id', $doctorId)->first();
             } while ($exists);
             
-            $data['data']['patient_id'] = $patientId;
+            $data['data']['doctor_id'] = $doctorId;
         }
         return $data;
     }
-
-    public function getFullName($patient)
+    
+    public function getInitials($fullName)
     {
-        return trim(($patient['first_name'] ?? '') . ' ' . ($patient['last_name'] ?? ''));
+        $names = explode(' ', $fullName);
+        $initials = '';
+        foreach ($names as $name) {
+            if (!empty($name)) {
+                $initials .= strtoupper(substr($name, 0, 1));
+            }
+        }
+        return substr($initials, 0, 3);
     }
 }
 

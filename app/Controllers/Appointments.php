@@ -6,6 +6,7 @@ use App\Models\AppointmentModel;
 use App\Models\PatientModel;
 use App\Models\UserModel;
 use App\Models\DepartmentModel;
+use App\Models\DoctorModel;
 
 class Appointments extends BaseController
 {
@@ -13,6 +14,7 @@ class Appointments extends BaseController
     protected $patientModel;
     protected $userModel;
     protected $deptModel;
+    protected $doctorModel;
     protected $session;
 
     public function __construct()
@@ -21,6 +23,7 @@ class Appointments extends BaseController
         $this->patientModel = new PatientModel();
         $this->userModel = new UserModel();
         $this->deptModel = new DepartmentModel();
+        $this->doctorModel = new DoctorModel();
         $this->session = session();
     }
 
@@ -42,10 +45,16 @@ class Appointments extends BaseController
         // Get related data for appointments
         foreach ($appointments as &$apt) {
             $patient = $this->patientModel->find($apt['patient_id']);
-            $doctor = $this->userModel->find($apt['doctor_id']);
+            // Try to get doctor from doctors table first, fallback to users table for backward compatibility
+            $doctor = $this->doctorModel->find($apt['doctor_id']);
+            if (!$doctor) {
+                $doctor = $this->userModel->find($apt['doctor_id']);
+                $apt['doctor_name'] = $doctor ? $doctor['name'] : 'Unknown';
+            } else {
+                $apt['doctor_name'] = $doctor['full_name'] ?? 'Unknown';
+            }
             $apt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
             $apt['patient_id_display'] = $patient ? $patient['patient_id'] : 'N/A';
-            $apt['doctor_name'] = $doctor ? $doctor['name'] : 'Unknown';
         }
 
         $data = [
@@ -57,7 +66,7 @@ class Appointments extends BaseController
             'appointments' => $appointments,
             'filter_date' => $filterDate,
             'patients' => $this->patientModel->findAll(),
-            'doctors' => $this->userModel->where('role', 'doctor')->findAll(),
+            'doctors' => $this->doctorModel->where('status', 'active')->findAll(), // Use DoctorModel instead of UserModel
             'departments' => $this->deptModel->where('status', 'active')->findAll()
         ];
 
