@@ -1,0 +1,13 @@
+CRITICAL - 2025-12-05 18:42:35 --> ErrorException: session_destroy(): Trying to destroy uninitialized session
+[Method: GET, Route: logout]
+in SYSTEMPATH\Session\Session.php on line 424.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'session_destroy(): Trying to destroy uninitialized session', 'C:\\xampp\\htdocs\\HMS-ITE311-G7\\system\\Session\\Session.php', 424)
+ 2 SYSTEMPATH\Session\Session.php(424): session_destroy()
+ 3 SYSTEMPATH\Session\Session.php(276): CodeIgniter\Session\Session->destroy()
+ 4 APPPATH\Controllers\Auth.php(81): CodeIgniter\Session\Session->stop()
+ 5 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->logout()
+ 6 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 7 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+10 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
