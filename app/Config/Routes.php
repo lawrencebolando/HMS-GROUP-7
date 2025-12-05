@@ -10,9 +10,13 @@ $routes->get('login', 'Auth::login');
 $routes->post('auth/authenticate', 'Auth::authenticate');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Dashboard::index');
+<<<<<<< HEAD
 
 // Pharmacy Management
 $routes->get('pharmacy', 'Pharmacy::index');
+=======
+$routes->get('update-admin-name', 'UpdateAdmin::index');
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
 
 // Patient Management Routes
 $routes->get('patients', 'Patients::index');
@@ -30,6 +34,17 @@ $routes->get('doctors/edit/(:num)', 'Doctors::edit/$1');
 $routes->post('doctors/update/(:num)', 'Doctors::update/$1');
 $routes->get('doctors/delete/(:num)', 'Doctors::delete/$1');
 
+<<<<<<< HEAD
+=======
+// Doctor Types Routes
+$routes->get('doctor-types', 'DoctorTypes::index');
+$routes->get('doctor-types/create', 'DoctorTypes::create');
+$routes->post('doctor-types/store', 'DoctorTypes::store');
+$routes->get('doctor-types/edit/(:num)', 'DoctorTypes::edit/$1');
+$routes->post('doctor-types/update/(:num)', 'DoctorTypes::update/$1');
+$routes->get('doctor-types/delete/(:num)', 'DoctorTypes::delete/$1');
+
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
 // Department Management Routes
 $routes->get('departments', 'Departments::index');
 $routes->post('departments/store', 'Departments::store');
@@ -40,6 +55,7 @@ $routes->get('departments/delete/(:num)', 'Departments::delete/$1');
 $routes->get('appointments', 'Appointments::index');
 $routes->post('appointments/store', 'Appointments::store');
 $routes->post('appointments/update/(:num)', 'Appointments::update/$1');
+<<<<<<< HEAD
 $routes->get('appointments/delete/(:num)', 'Appointments::delete/$1');
 
 // Doctor Portal Routes
@@ -65,3 +81,6 @@ $routes->group('reception', function($routes) {
     $routes->get('reports', 'Reception::reports');
     $routes->get('settings', 'Reception::settings');
 });
+=======
+$routes->get('appointments/delete/(:num)', 'Appointments::delete/$1');
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4

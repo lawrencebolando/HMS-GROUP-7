@@ -16,7 +16,11 @@ class AdminSeeder extends Seeder
         
         if (!$existingAdmin) {
             $data = [
+<<<<<<< HEAD
                 'name'     => 'St. Elizabeth Hospital, Inc.',
+=======
+                'name'     => 'St. Elizabeth Hospital',
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                 'email'    => 'admin@globalhospitals.com',
                 'password' => 'admin123', // Will be hashed by model
                 'role'     => 'admin',

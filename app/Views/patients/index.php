@@ -32,6 +32,10 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+<<<<<<< HEAD
+=======
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room</th>
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -40,7 +44,11 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 <?php if (empty($patients)): ?>
                     <tr>
+<<<<<<< HEAD
                         <td colspan="7" class="px-6 py-4 text-center text-gray-500">No patients found. <a href="<?= base_url('patients/create') ?>" class="text-blue-600 hover:underline">Add one now</a></td>
+=======
+                        <td colspan="8" class="px-6 py-4 text-center text-gray-500">No patients found. <a href="<?= base_url('patients/create') ?>" class="text-blue-600 hover:underline">Add one now</a></td>
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                     </tr>
                 <?php else: ?>
                     <?php foreach ($patients as $patient): ?>
@@ -49,6 +57,10 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= esc($patient['first_name'] . ' ' . $patient['last_name']) ?></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($patient['email'] ?? 'N/A') ?></td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($patient['phone'] ?? 'N/A') ?></td>
+<<<<<<< HEAD
+=======
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($patient['room'] ?? 'N/A') ?></td>
+>>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc(ucfirst($patient['gender'] ?? 'N/A')) ?></td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $patient['status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
