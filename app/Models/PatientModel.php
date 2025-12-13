@@ -22,10 +22,7 @@ class PatientModel extends Model
         'gender',
         'address',
         'blood_group',
-<<<<<<< HEAD
-=======
         'room',
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         'status',
         'created_at',
         'updated_at'

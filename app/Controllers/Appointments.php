@@ -6,10 +6,7 @@ use App\Models\AppointmentModel;
 use App\Models\PatientModel;
 use App\Models\UserModel;
 use App\Models\DepartmentModel;
-<<<<<<< HEAD
-=======
 use App\Models\DoctorModel;
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
 
 class Appointments extends BaseController
 {
@@ -17,10 +14,7 @@ class Appointments extends BaseController
     protected $patientModel;
     protected $userModel;
     protected $deptModel;
-<<<<<<< HEAD
-=======
     protected $doctorModel;
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
     protected $session;
 
     public function __construct()
@@ -29,10 +23,7 @@ class Appointments extends BaseController
         $this->patientModel = new PatientModel();
         $this->userModel = new UserModel();
         $this->deptModel = new DepartmentModel();
-<<<<<<< HEAD
-=======
         $this->doctorModel = new DoctorModel();
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         $this->session = session();
     }
 
@@ -54,12 +45,6 @@ class Appointments extends BaseController
         // Get related data for appointments
         foreach ($appointments as &$apt) {
             $patient = $this->patientModel->find($apt['patient_id']);
-<<<<<<< HEAD
-            $doctor = $this->userModel->find($apt['doctor_id']);
-            $apt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
-            $apt['patient_id_display'] = $patient ? $patient['patient_id'] : 'N/A';
-            $apt['doctor_name'] = $doctor ? $doctor['name'] : 'Unknown';
-=======
             // Try to get doctor from doctors table first, fallback to users table for backward compatibility
             $doctor = $this->doctorModel->find($apt['doctor_id']);
             if (!$doctor) {
@@ -70,7 +55,6 @@ class Appointments extends BaseController
             }
             $apt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
             $apt['patient_id_display'] = $patient ? $patient['patient_id'] : 'N/A';
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         }
 
         $data = [
@@ -82,11 +66,7 @@ class Appointments extends BaseController
             'appointments' => $appointments,
             'filter_date' => $filterDate,
             'patients' => $this->patientModel->findAll(),
-<<<<<<< HEAD
-            'doctors' => $this->userModel->where('role', 'doctor')->findAll(),
-=======
             'doctors' => $this->doctorModel->where('status', 'active')->findAll(), // Use DoctorModel instead of UserModel
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
             'departments' => $this->deptModel->where('status', 'active')->findAll()
         ];
 

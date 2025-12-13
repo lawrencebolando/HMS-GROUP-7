@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title><?= $title ?? 'HealthMS - Dashboard' ?></title>
-=======
     <title><?= $title ?? 'St. Elizabeth Hospital, Inc. - Dashboard' ?></title>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -90,19 +86,6 @@
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white sidebar-transition">
-<<<<<<< HEAD
-            <!-- User Profile Section -->
-            <div class="p-4 border-b border-gray-700">
-                <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-2">
-                        <i class="fas fa-plus text-white text-2xl"></i>
-                    </div>
-                    <div class="text-center">
-                        <div class="font-semibold"><?= esc($user['name'] ?? 'User') ?></div>
-                        <div class="flex items-center justify-center mt-1">
-                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                            <span class="text-sm text-gray-300"><?= esc(ucfirst($user['role'] ?? 'User')) ?></span>
-=======
             <!-- Hospital Logo Section -->
             <div class="p-4 border-b border-blue-700">
                 <div class="flex flex-col items-center">
@@ -112,7 +95,6 @@
                         <div class="flex items-center justify-center mt-1">
                             <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
                             <span class="text-xs text-gray-300"><?= esc(ucfirst($user['role'] ?? 'Admin')) ?></span>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                         </div>
                     </div>
                 </div>
@@ -131,19 +113,19 @@
                     <li>
                         <a href="<?= base_url('patients') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'patients') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-users w-5 mr-3"></i>
-                            <span>Patient Management</span>
+                            <span>Patients</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?= base_url('doctors') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'doctors') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-user-md w-5 mr-3"></i>
-                            <span>Doctor Management</span>
+                            <span>Doctors</span>
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('departments') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'departments') !== false ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-building w-5 mr-3"></i>
-                            <span>Departments</span>
+                        <a href="<?= base_url('nurses') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'nurses') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-user-nurse w-5 mr-3"></i>
+                            <span>Nurses</span>
                         </a>
                     </li>
                     <li>
@@ -153,55 +135,57 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
-                            <i class="fas fa-file-medical w-5 mr-3"></i>
-                            <span>Medical Records</span>
+                        <a href="<?= base_url('admissions') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'admissions') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-hospital w-5 mr-3"></i>
+                            <span>Admissions</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
+                        <a href="<?= base_url('walk-in') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'walk-in') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-walking w-5 mr-3"></i>
+                            <span>Walk In</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('rooms') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'rooms') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-bed w-5 mr-3"></i>
+                            <span>Rooms</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= base_url('billing') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'billing') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-credit-card w-5 mr-3"></i>
-                            <span>Billing & Invoices</span>
+                            <span>Billing & Payments</span>
                         </a>
                     </li>
                     <li>
-<<<<<<< HEAD
-                        <a href="<?= base_url('pharmacy') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'pharmacy') !== false ? 'nav-active' : '' ?> rounded-lg">
-=======
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
-                            <i class="fas fa-pills w-5 mr-3"></i>
-                            <span>Pharmacy</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
+                        <a href="<?= base_url('laboratory') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'laboratory') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-flask w-5 mr-3"></i>
                             <span>Laboratory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
-                            <i class="fas fa-exclamation-triangle w-5 mr-3"></i>
-                            <span>Emergency</span>
+                        <a href="<?= base_url('pharmacy') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'pharmacy') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-pills w-5 mr-3"></i>
+                            <span>Pharmacy & Inventory</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
+                        <a href="<?= base_url('reports') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reports') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-chart-bar w-5 mr-3"></i>
-                            <span>Analytics</span>
+                            <span>Reports</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
-                            <i class="fas fa-bell w-5 mr-3"></i>
-                            <span>Notifications</span>
+                        <a href="<?= base_url('users') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'users') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-user-cog w-5 mr-3"></i>
+                            <span>User Management</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
-                            <i class="fas fa-wrench w-5 mr-3"></i>
-                            <span>Equipment</span>
+                        <a href="<?= base_url('settings') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'settings') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-cog w-5 mr-3"></i>
+                            <span>Settings</span>
                         </a>
                     </li>
                 </ul>
@@ -217,45 +201,26 @@
                         <button id="sidebarToggle" class="mr-4 text-gray-600 hover:text-gray-900">
                             <i class="fas fa-bars text-xl"></i>
                         </button>
-<<<<<<< HEAD
-                        <h1 class="text-xl font-bold text-gray-800">HealthMS</h1>
-=======
                         <img src="<?= base_url('images/logo.svg') ?>" alt="Logo" class="w-8 h-8 mr-3 rounded-full">
                         <h1 class="text-xl font-bold text-gray-800">St. Elizabeth Hospital, Inc.</h1>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center text-gray-600">
                             <i class="fas fa-flag mr-2"></i>
-<<<<<<< HEAD
-                            <span><?= esc(ucfirst($user['role'] ?? 'User')) ?></span>
-                        </div>
-                        <div class="relative group">
-                            <div class="flex items-center text-gray-600 cursor-pointer" onclick="toggleUserMenu()">
-                                <i class="fas fa-user-circle mr-2 text-xl"></i>
-                                <span><?= esc($user['name'] ?? 'User') ?></span>
-                                <i class="fas fa-chevron-down ml-2 text-xs"></i>
-                            </div>
-                            <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden border border-gray-200">
-                                <a href="<?= base_url('logout') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-=======
-                            <span>Admin</span>
+                            <span><?= esc(ucfirst($user['role'] ?? 'Admin')) ?></span>
                         </div>
                         <div class="relative" id="userDropdown">
                             <button onclick="toggleDropdown()" class="flex items-center text-gray-600 cursor-pointer hover:text-gray-900">
                                 <i class="fas fa-user-circle mr-2 text-xl"></i>
-                                <span>Admin</span>
+                                <span><?= esc($user['name'] ?? 'Admin') ?></span>
                                 <i class="fas fa-chevron-down ml-2 text-xs"></i>
                             </button>
                             <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200 hidden">
                                 <a href="<?= base_url('logout') ?>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                                     <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                 </a>
                             </div>
                         </div>
-<<<<<<< HEAD
-=======
                         <script>
                             function toggleDropdown() {
                                 const menu = document.getElementById('dropdownMenu');
@@ -271,7 +236,6 @@
                                 }
                             });
                         </script>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                     </div>
                 </div>
             </header>
@@ -284,13 +248,8 @@
             <!-- Footer -->
             <footer class="bg-white border-t border-gray-200 px-6 py-4">
                 <div class="flex justify-between text-sm text-gray-600">
-<<<<<<< HEAD
-                    <div>Copyright © 2016-2017 Suvidha Software Solutions.</div>
-                    <div>HMS 1.0</div>
-=======
                     <div>© <?= date('Y') ?> St. Elizabeth Hospital, Inc. All rights reserved.</div>
                     <div>HMS v1.0</div>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                 </div>
             </footer>
         </div>
@@ -301,34 +260,11 @@
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
         
-<<<<<<< HEAD
         if (sidebarToggle && sidebar) {
             sidebarToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('sidebar-hidden');
             });
         }
-
-        // User menu toggle
-        function toggleUserMenu() {
-            const userMenu = document.getElementById('userMenu');
-            if (userMenu) {
-                userMenu.classList.toggle('hidden');
-            }
-        }
-
-        // Close user menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('userMenu');
-            const userMenuTrigger = event.target.closest('.group');
-            
-            if (userMenu && !userMenuTrigger) {
-                userMenu.classList.add('hidden');
-            }
-=======
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('sidebar-hidden');
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
-        });
     </script>
     <?= $this->renderSection('scripts') ?>
 </body>

@@ -6,10 +6,7 @@ use App\Models\UserModel;
 use App\Models\PatientModel;
 use App\Models\AppointmentModel;
 use App\Models\DepartmentModel;
-<<<<<<< HEAD
-=======
 use App\Models\DoctorModel;
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
 
 class Dashboard extends BaseController
 {
@@ -17,10 +14,7 @@ class Dashboard extends BaseController
     protected $patientModel;
     protected $appointmentModel;
     protected $deptModel;
-<<<<<<< HEAD
-=======
     protected $doctorModel;
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
     protected $session;
 
     public function __construct()
@@ -29,10 +23,7 @@ class Dashboard extends BaseController
         $this->patientModel = new PatientModel();
         $this->appointmentModel = new AppointmentModel();
         $this->deptModel = new DepartmentModel();
-<<<<<<< HEAD
-=======
         $this->doctorModel = new DoctorModel();
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         $this->session = session();
     }
 
@@ -49,29 +40,27 @@ class Dashboard extends BaseController
         }
         
         // Get dashboard statistics
-<<<<<<< HEAD
-=======
         $stats = $this->getDashboardStats();
-        $todayAppointments = $this->getTodayAppointments();
-        $upcomingAppointments = $this->getUpcomingAppointments();
+        $appointmentsData = $this->getAppointmentsData();
+        $labData = $this->getLabData();
+        $pharmacyData = $this->getPharmacyData();
         $recentActivities = $this->getRecentActivities();
+        $billingData = $this->getBillingData();
         
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
+        // Ensure all data arrays are properly initialized
         $data = [
             'title' => 'Dashboard',
             'user' => [
-                'name' => $this->session->get('user_name'),
-                'email' => $this->session->get('user_email'),
-                'role' => $this->session->get('user_role')
+                'name' => $this->session->get('user_name') ?? 'Admin',
+                'email' => $this->session->get('user_email') ?? '',
+                'role' => $this->session->get('user_role') ?? 'admin'
             ],
-<<<<<<< HEAD
-            'stats' => $this->getDashboardStats()
-=======
-            'stats' => $stats,
-            'today_appointments' => $todayAppointments,
-            'upcoming_appointments' => $upcomingAppointments,
-            'recent_activities' => $recentActivities
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
+            'stats' => $stats ?? [],
+            'appointments' => $appointmentsData ?? ['upcoming' => 0, 'this_week' => 0, 'list' => []],
+            'lab' => $labData ?? ['pending' => 0, 'completed_today' => 0, 'critical' => 0, 'tests' => []],
+            'pharmacy' => $pharmacyData ?? ['low_stock' => 0, 'expiring_soon' => 0, 'movements_today' => 0, 'movements' => []],
+            'recent_activities' => $recentActivities ?? [],
+            'billing' => $billingData ?? ['revenue_this_month' => 0, 'outstanding_invoices' => 0, 'payments' => []]
         ];
         
         return view('dashboard', $data);
@@ -81,81 +70,105 @@ class Dashboard extends BaseController
     {
         // Get counts from database
         $totalPatients = $this->patientModel->countAllResults();
-<<<<<<< HEAD
-        $totalDoctors = $this->userModel->where('role', 'doctor')->countAllResults();
-        $totalAdmins = $this->userModel->where('role', 'admin')->countAllResults();
-        $totalReceptionists = $this->userModel->where('role', 'receptionist')->countAllResults();
-=======
-        
-        // Count all doctors from the doctors table (including all statuses for "Available Doctors" display)
-        // This shows total doctors in the system
         $totalDoctors = $this->doctorModel->countAllResults();
+        $totalNurses = $this->userModel->where('role', 'nurse')->countAllResults();
         
         $todayDate = date('Y-m-d');
         $todayAppointmentsCount = $this->appointmentModel->where('appointment_date', $todayDate)->countAllResults();
+        $pendingAppointments = $this->appointmentModel->where('status', 'pending')->countAllResults();
         
-        // Calculate percentage changes (mock data for now)
-        $patientChange = '+12%';
-        $appointmentChange = '+8%';
-        $doctorChange = '+0%';
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
+        // Mock data for features not yet implemented
+        $activeLabTests = 0;
+        $lowStockMedicines = 0;
+        $unpaidBills = 0;
         
         return [
             'total_patients' => $totalPatients,
             'total_doctors' => $totalDoctors,
-<<<<<<< HEAD
-            'total_admins' => $totalAdmins,
-            'total_receptionists' => $totalReceptionists
-        ];
-    }
-=======
+            'total_nurses' => $totalNurses,
             'today_appointments' => $todayAppointmentsCount,
-            'patient_change' => $patientChange,
-            'appointment_change' => $appointmentChange,
-            'doctor_change' => $doctorChange,
-            'occupied_beds' => 187,
-            'total_beds' => 220,
-            'bed_percentage' => 85
+            'pending_appointments' => $pendingAppointments,
+            'active_lab_tests' => $activeLabTests,
+            'low_stock_medicines' => $lowStockMedicines,
+            'unpaid_bills' => $unpaidBills
         ];
     }
     
-    private function getTodayAppointments()
+    private function getAppointmentsData()
     {
         $todayDate = date('Y-m-d');
-        $appointments = $this->appointmentModel
-            ->where('appointment_date', $todayDate)
-            ->orderBy('appointment_time', 'ASC')
-            ->findAll(5);
+        $weekStart = date('Y-m-d', strtotime('monday this week'));
+        $weekEnd = date('Y-m-d', strtotime('sunday this week'));
         
-        foreach ($appointments as &$apt) {
-            $patient = $this->patientModel->find($apt['patient_id']);
-            $doctor = $this->userModel->find($apt['doctor_id']);
-            $apt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
-            $apt['doctor_name'] = $doctor ? $doctor['name'] : 'Unknown';
-        }
-        
-        return $appointments;
-    }
-    
-    private function getUpcomingAppointments()
-    {
-        $todayDate = date('Y-m-d');
-        $appointments = $this->appointmentModel
+        $upcoming = $this->appointmentModel
             ->where('appointment_date >=', $todayDate)
             ->where('status', 'scheduled')
+            ->countAllResults();
+        
+        $thisWeek = $this->appointmentModel
+            ->where('appointment_date >=', $weekStart)
+            ->where('appointment_date <=', $weekEnd)
+            ->countAllResults();
+        
+        // Get recent appointments for table
+        $appointments = $this->appointmentModel
+            ->where('appointment_date >=', $todayDate)
             ->orderBy('appointment_date', 'ASC')
             ->orderBy('appointment_time', 'ASC')
-            ->findAll(3);
+            ->findAll(10);
         
-        foreach ($appointments as &$apt) {
+        $appointmentsList = [];
+        foreach ($appointments as $apt) {
             $patient = $this->patientModel->find($apt['patient_id']);
             $doctor = $this->userModel->find($apt['doctor_id']);
-            $apt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
-            $apt['doctor_name'] = $doctor ? $doctor['name'] : 'Unknown';
+            $appointmentsList[] = [
+                'patient_name' => $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown',
+                'doctor_name' => $doctor ? $doctor['name'] : 'Unknown',
+                'date' => $apt['appointment_date'],
+                'time' => $apt['appointment_time'],
+                'status' => $apt['status'] ?? 'scheduled'
+            ];
         }
         
-        return $appointments;
+        return [
+            'upcoming' => $upcoming,
+            'this_week' => $thisWeek,
+            'list' => $appointmentsList
+        ];
     }
+    
+    private function getLabData()
+    {
+        // Mock data for lab tests (to be implemented)
+        return [
+            'pending' => 0,
+            'completed_today' => 0,
+            'critical' => 0,
+            'tests' => []
+        ];
+    }
+    
+    private function getPharmacyData()
+    {
+        // Mock data for pharmacy (to be implemented)
+        return [
+            'low_stock' => 0,
+            'expiring_soon' => 0,
+            'movements_today' => 0,
+            'movements' => []
+        ];
+    }
+    
+    private function getBillingData()
+    {
+        // Mock data for billing (to be implemented)
+        return [
+            'revenue_this_month' => 0.00,
+            'outstanding_invoices' => 0,
+            'payments' => []
+        ];
+    }
+    
     
     private function getRecentActivities()
     {
@@ -200,6 +213,5 @@ class Dashboard extends BaseController
             return floor($diff / 86400) . ' days ago';
         }
     }
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
 }
 

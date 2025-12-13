@@ -3,13 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title><?= $title ?? 'Global Hospitals' ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
-=======
     <title><?= $title ?? 'St. Elizabeth Hospital, Inc.' ?></title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -70,7 +63,6 @@
         
         .btn-login:hover {
             opacity: 0.9;
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         }
     </style>
 </head>

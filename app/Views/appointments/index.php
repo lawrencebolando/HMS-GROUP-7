@@ -137,11 +137,7 @@
                     <select name="doctor_id" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                         <option value="">Select doctor</option>
                         <?php foreach ($doctors as $doctor): ?>
-<<<<<<< HEAD
-                            <option value="<?= $doctor['id'] ?>"><?= esc($doctor['name']) ?></option>
-=======
                             <option value="<?= $doctor['id'] ?>"><?= esc($doctor['full_name'] ?? $doctor['name'] ?? 'Unknown') ?></option>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
                         <?php endforeach; ?>
                     </select>
                 </div>

@@ -91,11 +91,7 @@ $existingAdmin = $userModel->where('email', 'admin@globalhospitals.com')->first(
 
 if (!$existingAdmin) {
     $data = [
-<<<<<<< HEAD
         'name'     => 'St. Elizabeth Hospital, Inc.',
-=======
-        'name'     => 'Akhil',
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         'email'    => 'admin@globalhospitals.com',
         'password' => 'admin123', // Will be hashed by model
         'role'     => 'admin',

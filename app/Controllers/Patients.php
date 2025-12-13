@@ -77,10 +77,7 @@ class Patients extends BaseController
             'gender' => $this->request->getPost('gender') ?: null,
             'address' => trim($this->request->getPost('address')) ?: null,
             'blood_group' => $this->request->getPost('blood_group') ?: null,
-<<<<<<< HEAD
-=======
             'room' => trim($this->request->getPost('room')) ?: null,
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
             'status' => 'active'
         ];
 
@@ -136,10 +133,7 @@ class Patients extends BaseController
             'gender' => $this->request->getPost('gender'),
             'address' => $this->request->getPost('address'),
             'blood_group' => $this->request->getPost('blood_group'),
-<<<<<<< HEAD
-=======
             'room' => trim($this->request->getPost('room')) ?: null,
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
             'status' => $this->request->getPost('status')
         ];
 

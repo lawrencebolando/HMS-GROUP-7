@@ -2,194 +2,297 @@
 
 <?= $this->section('content') ?>
 <div>
-<<<<<<< HEAD
-    <!-- Dashboard Title -->
-    <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">DashBoard</h1>
-        <p class="text-gray-600 mt-1">it all starts here</p>
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <!-- Total Patients Card -->
-        <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
-            <div class="flex items-center justify-between mb-4">
-                <div class="bg-white bg-opacity-20 rounded-lg p-3">
-                    <i class="fas fa-users text-2xl"></i>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="text-4xl font-bold"><?= esc($stats['total_patients']) ?></div>
-                <div class="text-cyan-100 text-sm mt-1">Total Patients</div>
-            </div>
-            <a href="<?= base_url('patients') ?>" class="inline-flex items-center text-white text-sm font-medium hover:underline">
-                More info
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-
-        <!-- Consultation Doctors Card -->
-        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg shadow-lg p-6 text-white">
-            <div class="flex items-center justify-between mb-4">
-                <div class="bg-white bg-opacity-20 rounded-lg p-3">
-                    <i class="fas fa-stethoscope text-2xl"></i>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="text-4xl font-bold"><?= esc($stats['total_doctors']) ?></div>
-                <div class="text-green-100 text-sm mt-1">Consultation Doctors</div>
-            </div>
-            <a href="<?= base_url('doctors') ?>" class="inline-flex items-center text-white text-sm font-medium hover:underline">
-                More info
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-
-        <!-- Admin Accounts Card -->
-        <div class="bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg shadow-lg p-6 text-white">
-            <div class="flex items-center justify-between mb-4">
-                <div class="bg-white bg-opacity-20 rounded-lg p-3">
-                    <i class="fas fa-bullseye text-2xl"></i>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="text-4xl font-bold"><?= esc($stats['total_admins']) ?></div>
-                <div class="text-orange-100 text-sm mt-1">Admin Accounts</div>
-            </div>
-            <a href="#" class="inline-flex items-center text-white text-sm font-medium hover:underline">
-                More info
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-
-        <!-- Reception Accounts Card -->
-        <div class="bg-gradient-to-br from-red-500 to-pink-600 rounded-lg shadow-lg p-6 text-white">
-            <div class="flex items-center justify-between mb-4">
-                <div class="bg-white bg-opacity-20 rounded-lg p-3">
-                    <i class="fas fa-user-tie text-2xl"></i>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="text-4xl font-bold"><?= esc($stats['total_receptionists']) ?></div>
-                <div class="text-red-100 text-sm mt-1">Reception Accounts</div>
-            </div>
-            <a href="#" class="inline-flex items-center text-white text-sm font-medium hover:underline">
-                More info
-                <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </div>
-
-    <!-- Additional Content Area (Empty for now) -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <!-- Additional dashboard content can go here -->
-    </div>
-</div>
-<?= $this->endSection() ?>
-
-=======
     <!-- Dashboard Header -->
     <div class="mb-6">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-4xl font-bold text-gray-800">Dashboard</h1>
-                <p class="text-gray-600 mt-2 text-lg">Welcome back! Here's what's happening at your hospital today. Monitor key metrics, track activities, and stay updated with real-time information.</p>
-            </div>
-            <div class="text-right">
-                <button class="btn-primary inline-flex items-center mb-2">
-                    <i class="fas fa-bolt mr-2"></i>Live Updates
-                </button>
-                <p class="text-sm text-gray-500">Last updated: 2 minutes ago</p>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
+                <p class="text-gray-600">High-level overview of hospital operations and system status</p>
+                <p class="text-gray-500 text-sm mt-1">Date: <?= date('F d, Y') ?></p>
             </div>
         </div>
     </div>
 
-    <!-- Key Metrics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <!-- Total Patients Card -->
-        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-users text-blue-600 text-xl"></i>
+    <!-- Key Performance Indicators (8 Cards) -->
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">System metrics and statistics</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Total Patients -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Total Patients</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['total_patients'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-users text-blue-500 text-2xl"></i>
                 </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
             </div>
-            <div class="mb-2">
-                <div class="text-3xl font-bold text-gray-800"><?= number_format($stats['total_patients']) ?></div>
-                <div class="text-gray-600 text-sm mt-1">Total Patients</div>
-            </div>
-            <div class="flex items-center text-sm">
-                <span class="text-green-600 font-semibold"><?= $stats['patient_change'] ?></span>
-                <span class="text-gray-500 ml-1">vs last month</span>
-            </div>
-        </div>
 
-        <!-- Today's Appointments Card -->
-        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+            <!-- Total Doctors -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Total Doctors</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['total_doctors'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-user-md text-green-500 text-2xl"></i>
                 </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
             </div>
-            <div class="mb-2">
-                <div class="text-3xl font-bold text-gray-800"><?= number_format($stats['today_appointments']) ?></div>
-                <div class="text-gray-600 text-sm mt-1">Today's Appointments</div>
-            </div>
-            <div class="flex items-center text-sm">
-                <span class="text-green-600 font-semibold"><?= $stats['appointment_change'] ?></span>
-                <span class="text-gray-500 ml-1">vs last month</span>
-            </div>
-        </div>
 
-        <!-- Available Doctors Card -->
-        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-user-md text-purple-600 text-xl"></i>
+            <!-- Total Nurses -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Total Nurses</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['total_nurses'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-user-nurse text-purple-500 text-2xl"></i>
                 </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
             </div>
-            <div class="mb-2">
-                <div class="text-3xl font-bold text-gray-800"><?= number_format($stats['total_doctors']) ?></div>
-                <div class="text-gray-600 text-sm mt-1">Available Doctors</div>
-            </div>
-            <div class="flex items-center text-sm">
-                <span class="text-red-600 font-semibold"><?= $stats['doctor_change'] ?></span>
-                <span class="text-gray-500 ml-1">vs last month</span>
-            </div>
-        </div>
 
-        <!-- Occupied Beds Card -->
-        <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
-            <div class="flex items-center justify-between mb-4">
-                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-bed text-orange-600 text-xl"></i>
+            <!-- Today's Appointments -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Today's Appointments</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['today_appointments'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-calendar-day text-yellow-500 text-2xl"></i>
                 </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
             </div>
-            <div class="mb-2">
-                <div class="text-3xl font-bold text-gray-800"><?= $stats['occupied_beds'] ?>/<?= $stats['total_beds'] ?></div>
-                <div class="text-gray-600 text-sm mt-1">Occupied Beds</div>
+
+            <!-- Pending Appointments -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-orange-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Pending Appointments</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['pending_appointments'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-clock text-orange-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
             </div>
-            <div class="flex items-center text-sm">
-                <span class="text-green-600 font-semibold"><?= $stats['bed_percentage'] ?>%</span>
-                <span class="text-gray-500 ml-1">vs last month</span>
+
+            <!-- Active Lab Tests -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-indigo-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Active Lab Tests</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['active_lab_tests'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-flask text-indigo-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
+            </div>
+
+            <!-- Low Stock Medicines -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Low Stock Medicines</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['low_stock_medicines'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-pills text-red-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Updated today</p>
+            </div>
+
+            <!-- Unpaid Bills -->
+            <div class="bg-white rounded-lg shadow p-4 border-l-4 border-pink-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm mb-1">Unpaid Bills</p>
+                        <p class="text-2xl font-bold text-gray-800"><?= number_format($stats['unpaid_bills'] ?? 0) ?></p>
+                    </div>
+                    <i class="fas fa-file-invoice-dollar text-pink-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-red-500 mt-2">Updated today</p>
             </div>
         </div>
     </div>
 
-    <!-- Recent Activities and Upcoming Appointments -->
+    <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Recent Activities -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center">
-                    <i class="fas fa-bolt text-blue-500 mr-2"></i>Recent Activities
-                </h2>
+        <!-- Appointments Overview -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Appointment statistics and recent bookings</h2>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-blue-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600">Upcoming</p>
+                    <p class="text-2xl font-bold text-blue-600"><?= $appointments['upcoming'] ?? 0 ?></p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600">This Week</p>
+                    <p class="text-2xl font-bold text-green-600"><?= $appointments['this_week'] ?? 0 ?></p>
+                </div>
             </div>
-            <div class="space-y-4">
-                <?php if (empty($recent_activities)): ?>
-                    <p class="text-gray-500 text-center py-4">No recent activities</p>
+
+            <!-- Appointments Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Patient</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Doctor</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Date</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Time</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($appointments['list'] ?? [])): ?>
+                            <tr>
+                                <td colspan="5" class="text-center py-8 text-gray-500">No appointments found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($appointments['list'] as $apt): ?>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-2 px-3"><?= esc($apt['patient_name']) ?></td>
+                                    <td class="py-2 px-3"><?= esc($apt['doctor_name']) ?></td>
+                                    <td class="py-2 px-3"><?= date('M d, Y', strtotime($apt['date'])) ?></td>
+                                    <td class="py-2 px-3"><?= date('h:i A', strtotime($apt['time'])) ?></td>
+                                    <td class="py-2 px-3">
+                                        <span class="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-800">
+                                            <?= esc(ucfirst($apt['status'])) ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Laboratory Overview -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Lab test statistics and recent requests</h2>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-3 gap-4 mb-4">
+                <div class="bg-yellow-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600">Pending</p>
+                    <p class="text-2xl font-bold text-yellow-600"><?= $lab['pending'] ?? 0 ?></p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600">Completed Today</p>
+                    <p class="text-2xl font-bold text-green-600"><?= $lab['completed_today'] ?? 0 ?></p>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600">Critical</p>
+                    <p class="text-2xl font-bold text-red-600"><?= $lab['critical'] ?? 0 ?></p>
+                </div>
+            </div>
+
+            <!-- Lab Tests Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Patient</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Test Type</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Priority</th>
+                            <th class="text-left py-2 px-3 text-gray-700 font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($lab['tests'] ?? [])): ?>
+                            <tr>
+                                <td colspan="4" class="text-center py-8 text-gray-500">No lab requests found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($lab['tests'] as $test): ?>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-2 px-3"><?= esc($test['patient_name']) ?></td>
+                                    <td class="py-2 px-3"><?= esc($test['test_type']) ?></td>
+                                    <td class="py-2 px-3">
+                                        <span class="px-2 py-1 rounded text-xs font-semibold <?= $test['priority'] === 'high' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800' ?>">
+                                            <?= esc(ucfirst($test['priority'])) ?>
+                                        </span>
+                                    </td>
+                                    <td class="py-2 px-3">
+                                        <span class="px-2 py-1 rounded text-xs font-semibold bg-blue-100 text-blue-800">
+                                            <?= esc(ucfirst($test['status'])) ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Section: Pharmacy, Activity, and Billing -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Pharmacy & Inventory Overview -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Stock levels and inventory movements</h2>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <div class="bg-yellow-50 rounded-lg p-3 text-center">
+                    <p class="text-xs text-gray-600 mb-1">Low Stock</p>
+                    <p class="text-xl font-bold text-yellow-600"><?= $pharmacy['low_stock'] ?? 0 ?></p>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3 text-center">
+                    <p class="text-xs text-gray-600 mb-1">Expiring Soon</p>
+                    <p class="text-xl font-bold text-red-600"><?= $pharmacy['expiring_soon'] ?? 0 ?></p>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-3 text-center">
+                    <p class="text-xs text-gray-600 mb-1">Movements Today</p>
+                    <p class="text-xl font-bold text-blue-600"><?= $pharmacy['movements_today'] ?? 0 ?></p>
+                </div>
+            </div>
+
+            <!-- Stock Movements Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Medicine</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Movement Type</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Quantity Change</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($pharmacy['movements'] ?? [])): ?>
+                            <tr>
+                                <td colspan="4" class="text-center py-8 text-gray-500 text-xs">No stock movements found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($pharmacy['movements'] as $movement): ?>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-2 px-2 text-xs"><?= esc($movement['medicine']) ?></td>
+                                    <td class="py-2 px-2 text-xs"><?= esc($movement['type']) ?></td>
+                                    <td class="py-2 px-2 text-xs"><?= esc($movement['quantity']) ?></td>
+                                    <td class="py-2 px-2 text-xs"><?= esc($movement['date']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Chronological feed of latest system events</h2>
+            
+            <div class="space-y-3 max-h-96 overflow-y-auto">
+                <?php if (empty($recent_activities ?? [])): ?>
+                    <p class="text-gray-500 text-center py-8 text-sm">No recent activities</p>
                 <?php else: ?>
                     <?php foreach ($recent_activities as $activity): ?>
-                        <div class="flex items-start space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                        <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
                             <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                                 <i class="fas <?= $activity['icon'] ?> text-blue-600 text-sm"></i>
                             </div>
@@ -203,79 +306,52 @@
             </div>
         </div>
 
-        <!-- Upcoming Appointments -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center">
-                    <i class="fas fa-calendar text-green-500 mr-2"></i>Upcoming Appointments
-                </h2>
+        <!-- Billing & Payments Overview -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Financial metrics and payment transactions</h2>
+            
+            <!-- Statistics -->
+            <div class="grid grid-cols-1 gap-3 mb-4">
+                <div class="bg-green-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600 mb-1">Revenue This Month</p>
+                    <p class="text-2xl font-bold text-green-600">₱<?= number_format($billing['revenue_this_month'] ?? 0, 2) ?></p>
+                </div>
+                <div class="bg-red-50 rounded-lg p-3">
+                    <p class="text-sm text-gray-600 mb-1">Outstanding Invoices</p>
+                    <p class="text-2xl font-bold text-red-600"><?= number_format($billing['outstanding_invoices'] ?? 0) ?></p>
+                </div>
             </div>
-            <div class="space-y-4">
-                <?php if (empty($upcoming_appointments)): ?>
-                    <p class="text-gray-500 text-center py-4">No upcoming appointments</p>
-                <?php else: ?>
-                    <?php foreach ($upcoming_appointments as $apt): ?>
-                        <div class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                <span class="text-green-600 font-bold"><?= date('d', strtotime($apt['appointment_date'])) ?></span>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-gray-800 font-semibold"><?= esc($apt['patient_name']) ?></p>
-                                <p class="text-gray-600 text-sm"><?= esc($apt['doctor_name']) ?></p>
-                                <p class="text-gray-500 text-xs mt-1"><?= date('h:i A', strtotime($apt['appointment_time'])) ?></p>
-                            </div>
-                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded-full">
-                                <?= esc(ucfirst($apt['reason'] ?? 'Consultation')) ?>
-                            </span>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
 
-    <!-- Bed Occupancy Status -->
-    <div class="bg-white rounded-xl shadow-lg p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-gray-800 flex items-center">
-                <i class="fas fa-bed text-orange-500 mr-2"></i>Bed Occupancy Status
-            </h2>
-        </div>
-        <div class="space-y-6">
-            <!-- ICU -->
-            <div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-700 font-semibold">ICU</span>
-                    <span class="text-gray-600 text-sm">24/30 (80%)</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="bg-blue-600 h-3 rounded-full" style="width: 80%"></div>
-                </div>
-            </div>
-            
-            <!-- General Ward -->
-            <div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-700 font-semibold">General Ward</span>
-                    <span class="text-gray-600 text-sm">145/160 (91%)</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="bg-blue-600 h-3 rounded-full" style="width: 91%"></div>
-                </div>
-            </div>
-            
-            <!-- Emergency -->
-            <div>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-gray-700 font-semibold">Emergency</span>
-                    <span class="text-gray-600 text-sm">18/30 (60%)</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="bg-blue-600 h-3 rounded-full" style="width: 60%"></div>
-                </div>
+            <!-- Payments Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Patient</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Amount</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Date</th>
+                            <th class="text-left py-2 px-2 text-gray-700 font-semibold text-xs">Payment Method</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($billing['payments'] ?? [])): ?>
+                            <tr>
+                                <td colspan="4" class="text-center py-8 text-gray-500 text-xs">No payments found</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($billing['payments'] as $payment): ?>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-2 px-2 text-xs"><?= esc($payment['patient_name']) ?></td>
+                                    <td class="py-2 px-2 text-xs">₱<?= number_format($payment['amount'], 2) ?></td>
+                                    <td class="py-2 px-2 text-xs"><?= esc($payment['date']) ?></td>
+                                    <td class="py-2 px-2 text-xs"><?= esc($payment['method']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 <?= $this->endSection() ?>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4

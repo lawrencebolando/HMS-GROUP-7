@@ -5,18 +5,9 @@
     <!-- Header -->
     <header class="px-6 py-4 flex items-center justify-between">
         <!-- Logo and Brand -->
-<<<<<<< HEAD
-        <div class="flex items-center space-x-2">
-            <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3V8zM4 6h10v2H4V6zm0 4h10v2H4v-2zm0 4h7v2H4v-2z"/>
-                <path d="M2 4h14v16H2V4zm2 2v12h10V6H4z" fill="rgba(147, 51, 234, 0.1)"/>
-            </svg>
-            <h1 class="text-xl font-bold text-gray-800">GLOBAL HOSPITALS</h1>
-=======
         <div class="flex items-center space-x-3">
             <img src="<?= base_url('images/logo.svg') ?>" alt="St. Elizabeth Hospital Logo" class="w-10 h-10 rounded-full">
             <h1 class="text-xl font-bold text-gray-800">St. Elizabeth Hospital, Inc.</h1>
->>>>>>> 3bfa254a216ebb6a1c45607fb87bcfe8a1c479b4
         </div>
         
         <!-- Navigation -->
