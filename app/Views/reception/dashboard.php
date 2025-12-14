@@ -10,37 +10,36 @@
         <!-- Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <!-- Total Patients -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+            <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">Total Patients</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= esc($stats['total_patients']) ?></p>
+                        <p class="text-3xl font-bold text-gray-800"><?= number_format($stats['total_patients'] ?? 0) ?></p>
                     </div>
-                    <div class="bg-blue-100 rounded-full p-3">
-                        <i class="fas fa-users text-blue-600 text-xl"></i>
-                    </div>
+                    <i class="fas fa-users text-blue-500 text-3xl"></i>
                 </div>
             </div>
 
             <!-- New Patients Today -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+            <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-600 text-sm mb-1">New Patients Today</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= esc($stats['new_patients_today']) ?></p>
+                        <p class="text-3xl font-bold text-gray-800"><?= number_format($stats['new_patients_today'] ?? 0) ?></p>
                     </div>
-                    <div class="bg-green-100 rounded-full p-3">
-                        <i class="fas fa-user-plus text-green-600 text-xl"></i>
-                    </div>
+                    <i class="fas fa-user-plus text-green-500 text-3xl"></i>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Patient Records Section -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <div class="mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Patient Records</h2>
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-semibold text-gray-800">Patient Records</h2>
+            <a href="<?= base_url('patients/create') ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+                <i class="fas fa-plus mr-2"></i>Add Patient
+            </a>
         </div>
         
         <!-- Search Bar -->
@@ -55,21 +54,21 @@
 
         <!-- Patient Records Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AGE/GENDER</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CONTACT</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Patient ID</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Name</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">AGE/GENDER</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">CONTACT</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Status</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="patientsTableBody">
+                <tbody id="patientsTableBody">
                     <?php if (empty($patients)): ?>
                         <tr>
-                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">No patients found</td>
+                            <td colspan="6" class="text-center py-8 text-gray-500">No patients found</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($patients as $patient): ?>
@@ -77,39 +76,34 @@
                             $fullName = trim(($patient['first_name'] ?? '') . ' ' . ($patient['last_name'] ?? ''));
                             $age = $patient['date_of_birth'] ? date_diff(date_create($patient['date_of_birth']), date_create('today'))->y : 'N/A';
                             $status = $patient['status'] ?? 'active';
-                            $patientType = 'Outpatient'; // Default, can be changed based on inpatient records
                             ?>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900"><?= esc($patient['patient_id'] ?? 'N/A') ?></div>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-4 font-semibold"><?= esc($patient['patient_id'] ?? 'N/A') ?></td>
+                                <td class="py-3 px-4 font-semibold"><?= esc($fullName) ?></td>
+                                <td class="py-3 px-4">
+                                    <div class="text-gray-900"><?= esc($age) ?> years</div>
+                                    <div class="text-gray-500 text-xs"><?= esc(ucfirst($patient['gender'] ?? 'N/A')) ?></div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-user-circle text-gray-400 mr-2"></i>
-                                        <div>
-                                            <div class="text-sm font-medium text-gray-900"><?= esc($fullName) ?></div>
-                                            <div class="text-sm text-gray-500">Blood <?= esc($patient['blood_group'] ?? 'N/A') ?></div>
-                                        </div>
-                                    </div>
+                                <td class="py-3 px-4">
+                                    <div class="text-gray-900"><?= esc($patient['phone'] ?? 'N/A') ?></div>
+                                    <div class="text-gray-500 text-xs"><?= esc($patient['email'] ?? 'N/A') ?></div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?= esc($age) ?> years</div>
-                                    <div class="text-sm text-gray-500"><?= esc(ucfirst($patient['gender'] ?? 'N/A')) ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?= esc($patient['phone'] ?? 'N/A') ?></div>
-                                    <div class="text-sm text-gray-500"><?= esc($patient['email'] ?? 'N/A') ?></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="py-3 px-4">
                                     <?php if ($status === 'active'): ?>
                                         <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">ACTIVE</span>
                                     <?php else: ?>
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">DISCHARGED</span>
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">INACTIVE</span>
                                     <?php endif; ?>
-                                    <div class="text-sm text-gray-500 mt-1"><?= esc($patientType) ?></div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-800" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -133,4 +127,3 @@
     });
 </script>
 <?= $this->endSection() ?>
-

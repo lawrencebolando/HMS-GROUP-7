@@ -57,7 +57,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center px-4 py-3 nav-item rounded-lg">
+                        <a href="<?= base_url('doctor/inpatients') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'doctor/inpatients') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-bed w-5 mr-3"></i>
                             <span>Inpatients</span>
                         </a>

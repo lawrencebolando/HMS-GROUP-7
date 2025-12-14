@@ -34,29 +34,62 @@ class Doctor extends BaseController
         }
 
         $doctorId = $this->session->get('user_id');
-        
-        // Get doctor's patients (from appointments)
-        $appointments = $this->appointmentModel->where('doctor_id', $doctorId)->findAll();
-        $patientIds = array_unique(array_column($appointments, 'patient_id'));
-        
-        // Get patient statistics
-        $totalPatients = count($patientIds);
         $today = date('Y-m-d');
-        $newPatientsToday = $this->appointmentModel
+        $yesterday = date('Y-m-d', strtotime('-1 day'));
+        $lastMonth = date('Y-m', strtotime('-1 month'));
+        $currentMonth = date('Y-m');
+        
+        // Get today's appointments
+        $todayAppointments = $this->appointmentModel
             ->where('doctor_id', $doctorId)
             ->where('appointment_date', $today)
+            ->findAll();
+        
+        // Get yesterday's appointments count
+        $yesterdayAppointments = $this->appointmentModel
+            ->where('doctor_id', $doctorId)
+            ->where('appointment_date', $yesterday)
             ->countAllResults();
         
-        // Get all patients for the table
-        $patients = [];
-        if (!empty($patientIds)) {
-            $patients = $this->patientModel->whereIn('id', $patientIds)->findAll();
+        $appointmentsChange = count($todayAppointments) - $yesterdayAppointments;
+        
+        // Get total patients
+        $appointments = $this->appointmentModel->where('doctor_id', $doctorId)->findAll();
+        $patientIds = array_unique(array_column($appointments, 'patient_id'));
+        $totalPatients = count($patientIds);
+        
+        // Get pending reports (mock - would need reports table)
+        $pendingReports = 0;
+        $pendingReportsChange = -1; // Mock change
+        
+        // Get revenue this month (mock - would need billing/invoices table)
+        $revenueThisMonth = 0.00;
+        $revenueChange = 8; // Mock percentage change
+        
+        // Get recent appointments (past week)
+        $weekAgo = date('Y-m-d', strtotime('-7 days'));
+        $recentAppointments = $this->appointmentModel
+            ->where('doctor_id', $doctorId)
+            ->where('appointment_date >=', $weekAgo)
+            ->where('appointment_date <=', $today)
+            ->orderBy('appointment_date', 'DESC')
+            ->orderBy('appointment_time', 'DESC')
+            ->limit(10)
+            ->findAll();
+        
+        // Enrich appointments with patient data
+        $todayAppointmentsWithPatients = [];
+        foreach ($todayAppointments as $appt) {
+            $patient = $this->patientModel->find($appt['patient_id']);
+            $appt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
+            $todayAppointmentsWithPatients[] = $appt;
         }
-
-        // Get patient details for display
-        $patientsWithDetails = [];
-        foreach ($patients as $patient) {
-            $patientsWithDetails[] = $patient;
+        
+        $recentAppointmentsWithPatients = [];
+        foreach ($recentAppointments as $appt) {
+            $patient = $this->patientModel->find($appt['patient_id']);
+            $appt['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
+            $recentAppointmentsWithPatients[] = $appt;
         }
 
         $data = [
@@ -67,12 +100,16 @@ class Doctor extends BaseController
                 'role' => $this->session->get('user_role')
             ],
             'stats' => [
+                'today_appointments' => count($todayAppointments),
+                'appointments_change' => $appointmentsChange,
                 'total_patients' => $totalPatients,
-                'new_patients_today' => $newPatientsToday,
-                'admitted_patients' => 0, // Placeholder
-                'critical_patients' => 0  // Placeholder
+                'pending_reports' => $pendingReports,
+                'pending_reports_change' => $pendingReportsChange,
+                'revenue_this_month' => $revenueThisMonth,
+                'revenue_change' => $revenueChange
             ],
-            'patients' => $patientsWithDetails,
+            'today_appointments' => $todayAppointmentsWithPatients,
+            'recent_appointments' => $recentAppointmentsWithPatients,
             'doctor_name' => $this->session->get('user_name')
         ];
 
@@ -329,6 +366,46 @@ class Doctor extends BaseController
         ];
 
         return view('doctor/consultations', $data);
+    }
+
+    public function inpatients()
+    {
+        if (!$this->session->get('is_logged_in') || $this->session->get('user_role') !== 'doctor') {
+            return redirect()->to('login')->with('error', 'Please login as doctor to continue');
+        }
+
+        $doctorId = $this->session->get('user_id');
+        $db = \Config\Database::connect();
+        
+        // Get inpatients (admissions) for this doctor
+        $inpatients = [];
+        if ($db->tableExists('admissions')) {
+            $inpatients = $db->table('admissions')
+                ->where('doctor_id', $doctorId)
+                ->where('status', 'active')
+                ->orderBy('admission_date', 'DESC')
+                ->get()
+                ->getResultArray();
+            
+            // Enrich with patient data
+            foreach ($inpatients as &$inpatient) {
+                $patient = $this->patientModel->find($inpatient['patient_id']);
+                $inpatient['patient_name'] = $patient ? ($patient['first_name'] . ' ' . $patient['last_name']) : 'Unknown';
+            }
+        }
+
+        $data = [
+            'title' => 'Inpatients',
+            'user' => [
+                'name' => $this->session->get('user_name'),
+                'email' => $this->session->get('user_email'),
+                'role' => $this->session->get('user_role')
+            ],
+            'inpatients' => $inpatients,
+            'doctor_name' => $this->session->get('user_name')
+        ];
+
+        return view('doctor/inpatients', $data);
     }
 
     public function labs()

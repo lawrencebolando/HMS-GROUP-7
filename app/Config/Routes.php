@@ -44,6 +44,20 @@ $routes->post('walk-in/store', 'WalkIn::store');
 // Rooms Management Routes
 $routes->get('rooms', 'Rooms::index');
 
+// Billing & Payments Routes
+$routes->get('billing', 'Billing::index');
+$routes->post('billing/create-bills', 'Billing::createBills');
+$routes->get('billing/export', 'Billing::export');
+
+// Laboratory Routes
+$routes->get('laboratory', 'Laboratory::index');
+
+// Portal Routes
+$routes->get('nurse/dashboard', 'NursePortal::index');
+$routes->get('lab/dashboard', 'LabPortal::index');
+$routes->get('accounts/dashboard', 'AccountsPortal::index');
+$routes->get('it/dashboard', 'ITPortal::index');
+
 // Doctor Types Routes
 $routes->get('doctor-types', 'DoctorTypes::index');
 $routes->get('doctor-types/create', 'DoctorTypes::create');
@@ -68,6 +82,7 @@ $routes->group('doctor', function($routes) {
     $routes->get('dashboard', 'Doctor::dashboard');
     $routes->get('patients', 'Doctor::patients');
     $routes->get('appointments', 'Doctor::appointments');
+    $routes->get('inpatients', 'Doctor::inpatients');
     $routes->get('prescriptions', 'Doctor::prescriptions');
     $routes->get('schedule', 'Doctor::schedule');
     $routes->post('schedule/add', 'Doctor::addSchedule');

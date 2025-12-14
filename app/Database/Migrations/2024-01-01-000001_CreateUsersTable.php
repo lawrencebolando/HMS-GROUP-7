@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             ],
             'role' => [
                 'type'       => 'ENUM',
-                'constraint' => ['admin', 'doctor', 'receptionist', 'patient'],
+                'constraint' => ['admin', 'doctor', 'receptionist', 'patient', 'nurse', 'lab_technician', 'lab_staff', 'lab', 'accountant', 'accounts', 'it', 'it_staff', 'it_admin'],
                 'default'    => 'patient',
             ],
             'status' => [

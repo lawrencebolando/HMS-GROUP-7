@@ -1,0 +1,15 @@
+ERROR - 2025-12-14 12:18:31 --> Error fetching recent test results: Undefined array key "name"
+ERROR - 2025-12-14 12:18:46 --> Error fetching recent test results: Undefined array key "name"
+ERROR - 2025-12-14 12:20:09 --> Login failed for it.james@hospital.com: User not found
+ERROR - 2025-12-14 12:22:11 --> Login failed for it.james@hospital.com: User not found
+ERROR - 2025-12-14 12:22:21 --> Login failed for it.james@hospital.com: User not found
+ERROR - 2025-12-14 12:25:09 --> Login failed for it.james@hospital.com: User exists but password doesn't match
+ERROR - 2025-12-14 12:25:41 --> Login failed for it.james@hospital.com: User exists but password doesn't match
+ERROR - 2025-12-14 12:30:21 --> Login failed for it.james@hospital.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 12:33:46 --> Login failed for it.james@hospital.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 12:35:07 --> Login failed for it.james@hospital.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 12:42:33 --> Login failed for it.james@hospital.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 12:47:08 --> Login failed for doctor@example.com: User not found
+ERROR - 2025-12-14 12:47:47 --> Login failed for doctor@example.com: User not found
+ERROR - 2025-12-14 12:48:02 --> Login failed for doctor@example.com: User not found
+ERROR - 2025-12-14 12:48:37 --> Login failed for sarah.johnson@hospital.com: User exists but password doesn't match. Password verify: false

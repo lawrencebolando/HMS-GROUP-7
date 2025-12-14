@@ -2,135 +2,202 @@
 
 <?= $this->section('content') ?>
 <div>
-    <!-- My Patients Section -->
-    <div class="mb-8">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">My Patients</h2>
-        <p class="text-gray-600 mb-6">View and manage your patient records.</p>
-        
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <!-- Total Patients -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Total Patients</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= esc($stats['total_patients']) ?></p>
-                    </div>
-                    <div class="bg-blue-100 rounded-full p-3">
-                        <i class="fas fa-users text-blue-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
+    <!-- Doctor Dashboard Section -->
+    <div class="mb-6">
+        <div class="flex items-center space-x-2 mb-2">
+            <i class="fas fa-lightbulb text-yellow-500"></i>
+            <h2 class="text-xl font-semibold text-gray-800">Doctor Dashboard</h2>
+        </div>
+        <p class="text-gray-600">Quick overview of today's appointments and patient care.</p>
+    </div>
 
-            <!-- New Patients Today -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">New Patients Today</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= esc($stats['new_patients_today']) ?></p>
-                    </div>
-                    <div class="bg-green-100 rounded-full p-3">
-                        <i class="fas fa-user-plus text-green-600 text-xl"></i>
-                    </div>
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Today's Appointments -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-blue-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Today's Appointments</p>
+                    <p class="text-3xl font-bold text-gray-800"><?= number_format($stats['today_appointments'] ?? 0) ?></p>
+                    <?php if (isset($stats['appointments_change'])): ?>
+                        <p class="text-sm <?= $stats['appointments_change'] >= 0 ? 'text-green-600' : 'text-red-600' ?> mt-1">
+                            <?= $stats['appointments_change'] >= 0 ? '+' : '' ?><?= $stats['appointments_change'] ?> from yesterday
+                        </p>
+                    <?php endif; ?>
                 </div>
+                <i class="fas fa-calendar-check text-blue-500 text-3xl"></i>
             </div>
+        </div>
 
-            <!-- Admitted Patients -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Admitted Patients</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= $stats['admitted_patients'] > 0 ? esc($stats['admitted_patients']) : '-' ?></p>
-                    </div>
-                    <div class="bg-orange-100 rounded-full p-3">
-                        <i class="fas fa-bed text-orange-600 text-xl"></i>
-                    </div>
+        <!-- Total Patients -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Total Patients</p>
+                    <p class="text-3xl font-bold text-gray-800"><?= number_format($stats['total_patients'] ?? 0) ?></p>
                 </div>
+                <i class="fas fa-users text-green-500 text-3xl"></i>
             </div>
+        </div>
 
-            <!-- Critical Patients -->
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm mb-1">Critical Patients</p>
-                        <p class="text-3xl font-bold text-gray-800"><?= $stats['critical_patients'] > 0 ? esc($stats['critical_patients']) : '-' ?></p>
-                    </div>
-                    <div class="bg-red-100 rounded-full p-3">
-                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
-                    </div>
+        <!-- Pending Reports -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-orange-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Pending Reports</p>
+                    <p class="text-3xl font-bold text-gray-800"><?= number_format($stats['pending_reports'] ?? 0) ?></p>
+                    <?php if (isset($stats['pending_reports_change'])): ?>
+                        <p class="text-sm <?= $stats['pending_reports_change'] >= 0 ? 'text-green-600' : 'text-red-600' ?> mt-1">
+                            <?= $stats['pending_reports_change'] >= 0 ? '+' : '' ?><?= $stats['pending_reports_change'] ?> from yesterday
+                        </p>
+                    <?php endif; ?>
                 </div>
+                <i class="fas fa-file-medical text-orange-500 text-3xl"></i>
+            </div>
+        </div>
+
+        <!-- Revenue This Month -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-purple-500">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 mb-1">Revenue This Month</p>
+                    <p class="text-3xl font-bold text-gray-800">₱<?= number_format($stats['revenue_this_month'] ?? 0, 2) ?></p>
+                    <?php if (isset($stats['revenue_change'])): ?>
+                        <p class="text-sm text-green-600 mt-1">
+                            +<?= $stats['revenue_change'] ?>% from last month
+                        </p>
+                    <?php endif; ?>
+                </div>
+                <i class="fas fa-dollar-sign text-purple-500 text-3xl"></i>
             </div>
         </div>
     </div>
 
-    <!-- Patient Records Section -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">Patient Records</h2>
-        <p class="text-gray-600 mb-6">Search and manage patient information.</p>
+    <!-- Today's Appointments Section -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Today's Appointments</h2>
+        <p class="text-sm text-gray-600 mb-4">Your scheduled appointments for today.</p>
         
-        <!-- Search Bar -->
-        <div class="mb-6">
-            <input 
-                type="text" 
-                id="searchPatients" 
-                placeholder="Search patients..." 
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-        </div>
-
-        <!-- Patient Records Table -->
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Patient ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AGE/GENDER</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CONTACT</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DOCTOR</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Time</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Patient</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Type</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Status</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Notes</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-200" id="patientsTableBody">
-                    <?php if (empty($patients)): ?>
+                <tbody>
+                    <?php if (empty($today_appointments)): ?>
                         <tr>
-                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">No patients found</td>
+                            <td colspan="6" class="text-center py-8 text-gray-500">
+                                No appointments scheduled for today
+                            </td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($patients as $patient): ?>
-                            <?php
-                            $fullName = trim(($patient['first_name'] ?? '') . ' ' . ($patient['last_name'] ?? ''));
-                            $age = $patient['date_of_birth'] ? date_diff(date_create($patient['date_of_birth']), date_create('today'))->y : 'N/A';
-                            ?>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900"><?= esc($patient['patient_id'] ?? 'N/A') ?></div>
+                        <?php foreach ($today_appointments as $appt): ?>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-4">
+                                    <?= isset($appt['appointment_time']) ? date('h:i A', strtotime($appt['appointment_time'])) : 'N/A' ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900"><?= esc($fullName) ?></div>
-                                    <div class="text-sm text-gray-500">Blood <?= esc($patient['blood_group'] ?? 'N/A') ?></div>
+                                <td class="py-3 px-4 font-semibold"><?= esc($appt['patient_name'] ?? 'Unknown') ?></td>
+                                <td class="py-3 px-4"><?= esc($appt['appointment_type'] ?? 'General') ?></td>
+                                <td class="py-3 px-4">
+                                    <?php 
+                                    $status = $appt['status'] ?? 'pending';
+                                    $statusClass = $status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                                   ($status === 'cancelled' ? 'bg-red-100 text-red-800' : 
+                                                   'bg-yellow-100 text-yellow-800');
+                                    ?>
+                                    <span class="px-2 py-1 rounded text-xs font-semibold <?= $statusClass ?>">
+                                        <?= esc(ucfirst($status)) ?>
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?= esc($age) ?> years</div>
-                                    <div class="text-sm text-gray-500"><?= esc(ucfirst($patient['gender'] ?? 'N/A')) ?></div>
+                                <td class="py-3 px-4">
+                                    <span class="text-gray-600"><?= esc(substr($appt['notes'] ?? 'N/A', 0, 30)) ?><?= strlen($appt['notes'] ?? '') > 30 ? '...' : '' ?></span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?= esc($patient['phone'] ?? 'N/A') ?></div>
-                                    <div class="text-sm text-gray-500"><?= esc($patient['email'] ?? 'N/A') ?></div>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-800" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">ACTIVE</span>
-                                    <div class="text-sm text-gray-500 mt-1">Outpatient</div>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Appointments Section -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">Recent Appointments</h2>
+        <p class="text-sm text-gray-600 mb-4">Your recent appointments from the past week.</p>
+        
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-200 bg-gray-50">
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">ID</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Date</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Time</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Patient</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Type</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Status</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Notes</th>
+                        <th class="text-left py-3 px-4 text-gray-700 font-semibold">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($recent_appointments)): ?>
+                        <tr>
+                            <td colspan="8" class="text-center py-8 text-gray-500">
+                                No recent appointments
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($recent_appointments as $appt): ?>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-4 font-semibold"><?= esc($appt['appointment_id'] ?? $appt['id']) ?></td>
+                                <td class="py-3 px-4">
+                                    <?= isset($appt['appointment_date']) ? date('M d, Y', strtotime($appt['appointment_date'])) : 'N/A' ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">Dr. <?= esc($doctor_name) ?></div>
-                                    <div class="text-sm text-gray-500">Last: <?= date('M d, Y') ?></div>
+                                <td class="py-3 px-4">
+                                    <?= isset($appt['appointment_time']) ? date('h:i A', strtotime($appt['appointment_time'])) : 'N/A' ?>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                    <a href="#" class="text-green-600 hover:text-green-900 mr-3">Edit</a>
-                                    <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                <td class="py-3 px-4 font-semibold"><?= esc($appt['patient_name'] ?? 'Unknown') ?></td>
+                                <td class="py-3 px-4"><?= esc($appt['appointment_type'] ?? 'General') ?></td>
+                                <td class="py-3 px-4">
+                                    <?php 
+                                    $status = $appt['status'] ?? 'pending';
+                                    $statusClass = $status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                                   ($status === 'cancelled' ? 'bg-red-100 text-red-800' : 
+                                                   'bg-yellow-100 text-yellow-800');
+                                    ?>
+                                    <span class="px-2 py-1 rounded text-xs font-semibold <?= $statusClass ?>">
+                                        <?= esc(ucfirst($status)) ?>
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="text-gray-600"><?= esc(substr($appt['notes'] ?? 'N/A', 0, 30)) ?><?= strlen($appt['notes'] ?? '') > 30 ? '...' : '' ?></span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-800" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-800" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -140,18 +207,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Search functionality
-    document.getElementById('searchPatients').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const rows = document.querySelectorAll('#patientsTableBody tr');
-        
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    });
-</script>
 <?= $this->endSection() ?>
-

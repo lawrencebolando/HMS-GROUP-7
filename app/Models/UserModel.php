@@ -40,7 +40,7 @@ class UserModel extends Model
         'email' => 'required|valid_email|is_unique[users.email]',
         'password' => 'required|min_length[6]',
         'name' => 'required|min_length[3]',
-        'role' => 'required|in_list[admin,doctor,receptionist,patient]'
+        'role' => 'required|in_list[admin,doctor,receptionist,patient,nurse,lab_technician,lab_staff,lab,accountant,accounts,it,it_staff,it_admin]'
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
@@ -67,6 +67,9 @@ class UserModel extends Model
 
     public function verifyPassword($email, $password)
     {
+        // Normalize email (trim and lowercase)
+        $email = strtolower(trim($email));
+        
         $user = $this->where('email', $email)->first();
         
         if (!$user) {

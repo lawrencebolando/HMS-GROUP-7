@@ -57,6 +57,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="<?= base_url('reception/follow-ups') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/follow-ups') !== false ? 'nav-active' : '' ?> rounded-lg">
+                            <i class="fas fa-redo w-5 mr-3"></i>
+                            <span>Follow-ups</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?= base_url('reception/reports') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/reports') !== false ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-chart-bar w-5 mr-3"></i>
                             <span>Reports</span>
@@ -89,7 +95,7 @@
                     <div class="flex items-center space-x-4">
                         <div class="flex items-center text-gray-600">
                             <i class="fas fa-flag mr-2"></i>
-                            <span>Reception</span>
+                            <span>Receptionist</span>
                         </div>
                         <div class="relative group">
                             <div class="flex items-center text-gray-600 cursor-pointer" onclick="toggleUserMenu()">

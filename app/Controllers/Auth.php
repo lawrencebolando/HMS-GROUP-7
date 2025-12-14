@@ -37,9 +37,21 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Email and password are required');
         }
         
+        // Normalize email (trim and lowercase)
+        $email = strtolower(trim($email));
+        
         $user = $this->userModel->verifyPassword($email, $password);
         
         if (!$user) {
+            // Debug: Check if user exists at all
+            $userExists = $this->userModel->where('email', $email)->first();
+            if ($userExists) {
+                // Test password manually
+                $passwordMatch = password_verify($password, $userExists['password']);
+                log_message('error', "Login failed for {$email}: User exists but password doesn't match. Password verify: " . ($passwordMatch ? 'true' : 'false'));
+            } else {
+                log_message('error', "Login failed for {$email}: User not found");
+            }
             return redirect()->back()->with('error', 'Invalid email or password');
         }
         
@@ -64,6 +76,14 @@ class Auth extends BaseController
             return redirect()->to('doctor/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } elseif ($user['role'] === 'receptionist') {
             return redirect()->to('receptionist/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+        } elseif ($user['role'] === 'nurse') {
+            return redirect()->to('nurse/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+        } elseif (in_array($user['role'], ['lab_technician', 'lab_staff', 'lab'])) {
+            return redirect()->to('lab/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+        } elseif (in_array($user['role'], ['accountant', 'accounts'])) {
+            return redirect()->to('accounts/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+        } elseif (in_array($user['role'], ['it', 'it_staff', 'it_admin'])) {
+            return redirect()->to('it/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } else {
             return redirect()->to('patient/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         }
