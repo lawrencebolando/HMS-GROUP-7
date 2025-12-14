@@ -75,7 +75,7 @@ class Auth extends BaseController
         } elseif ($user['role'] === 'doctor') {
             return redirect()->to('doctor/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } elseif ($user['role'] === 'receptionist') {
-            return redirect()->to('receptionist/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+            return redirect()->to('reception/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } elseif ($user['role'] === 'nurse') {
             return redirect()->to('nurse/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } elseif (in_array($user['role'], ['lab_technician', 'lab_staff', 'lab'])) {

@@ -57,7 +57,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/follow-ups') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/follow-ups') !== false ? 'nav-active' : '' ?> rounded-lg">
+                        <a href="<?= base_url('reception/followups') ?>" class="flex items-center px-4 py-3 nav-item <?= (strpos($currentPath, 'reception/followups') !== false || strpos($currentPath, 'reception/follow-ups') !== false) ? 'nav-active' : '' ?> rounded-lg">
                             <i class="fas fa-redo w-5 mr-3"></i>
                             <span>Follow-ups</span>
                         </a>

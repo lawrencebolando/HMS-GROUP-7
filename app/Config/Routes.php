@@ -98,6 +98,17 @@ $routes->group('reception', function($routes) {
     $routes->get('dashboard', 'Reception::dashboard');
     $routes->get('patients', 'Reception::patients');
     $routes->get('appointments', 'Reception::appointments');
+    $routes->get('followups', 'Reception::followUps');
+    $routes->get('follow-ups', 'Reception::followUps'); // Alias with hyphen
     $routes->get('reports', 'Reception::reports');
     $routes->get('settings', 'Reception::settings');
 });
+
+// Receptionist alias routes (for backward compatibility)
+$routes->get('receptionist/dashboard', 'Reception::dashboard');
+$routes->get('receptionist/patients', 'Reception::patients');
+$routes->get('receptionist/appointments', 'Reception::appointments');
+$routes->get('receptionist/followups', 'Reception::followUps');
+$routes->get('receptionist/follow-ups', 'Reception::followUps'); // Alias with hyphen
+$routes->get('receptionist/reports', 'Reception::reports');
+$routes->get('receptionist/settings', 'Reception::settings');

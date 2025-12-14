@@ -70,6 +70,13 @@ class Reception extends BaseController
             return redirect()->to('login')->with('error', 'Please login as receptionist to continue');
         }
 
+        // Get patient statistics
+        $totalPatients = $this->patientModel->countAllResults();
+        $today = date('Y-m-d');
+        $newPatientsToday = $this->patientModel
+            ->where('DATE(created_at)', $today)
+            ->countAllResults();
+        
         $patients = $this->patientModel->orderBy('created_at', 'DESC')->findAll();
 
         $data = [
@@ -79,7 +86,11 @@ class Reception extends BaseController
                 'email' => $this->session->get('user_email'),
                 'role' => $this->session->get('user_role')
             ],
-            'patients' => $patients
+            'patients' => $patients,
+            'stats' => [
+                'total_patients' => $totalPatients,
+                'new_patients_today' => $newPatientsToday
+            ]
         ];
 
         return view('reception/patients', $data);
@@ -91,20 +102,45 @@ class Reception extends BaseController
             return redirect()->to('login')->with('error', 'Please login as receptionist to continue');
         }
 
-        $appointments = $this->appointmentModel
-            ->orderBy('appointment_date', 'DESC')
-            ->orderBy('appointment_time', 'DESC')
+        $today = date('Y-m-d');
+        
+        // Get today's appointments
+        $todayAppointments = $this->appointmentModel
+            ->where('appointment_date', $today)
+            ->orderBy('appointment_time', 'ASC')
             ->findAll();
         
-        // Get patient and doctor details for appointments
-        $appointmentsWithDetails = [];
-        foreach ($appointments as $appt) {
+        // Get upcoming appointments
+        $upcomingAppointments = $this->appointmentModel
+            ->where('appointment_date >', $today)
+            ->orderBy('appointment_date', 'ASC')
+            ->orderBy('appointment_time', 'ASC')
+            ->findAll();
+        
+        // Enrich appointments with patient and doctor details
+        $todayAppointmentsWithDetails = [];
+        foreach ($todayAppointments as $appt) {
             $patient = $this->patientModel->find($appt['patient_id']);
             $doctor = $this->userModel->find($appt['doctor_id']);
             $appt['patient'] = $patient;
             $appt['doctor'] = $doctor;
-            $appointmentsWithDetails[] = $appt;
+            $todayAppointmentsWithDetails[] = $appt;
         }
+        
+        $upcomingAppointmentsWithDetails = [];
+        foreach ($upcomingAppointments as $appt) {
+            $patient = $this->patientModel->find($appt['patient_id']);
+            $doctor = $this->userModel->find($appt['doctor_id']);
+            $appt['patient'] = $patient;
+            $appt['doctor'] = $doctor;
+            $upcomingAppointmentsWithDetails[] = $appt;
+        }
+        
+        // Count pending check-ins (appointments scheduled but not checked in)
+        $pendingCheckins = $this->appointmentModel
+            ->where('appointment_date', $today)
+            ->where('status', 'pending')
+            ->countAllResults();
 
         $data = [
             'title' => 'Appointments',
@@ -113,12 +149,80 @@ class Reception extends BaseController
                 'email' => $this->session->get('user_email'),
                 'role' => $this->session->get('user_role')
             ],
-            'appointments' => $appointmentsWithDetails,
-            'patientModel' => $this->patientModel,
-            'userModel' => $this->userModel
+            'today_appointments' => $todayAppointmentsWithDetails,
+            'upcoming_appointments' => $upcomingAppointmentsWithDetails,
+            'stats' => [
+                'today_appointments' => count($todayAppointmentsWithDetails),
+                'pending_checkins' => $pendingCheckins
+            ]
         ];
 
         return view('reception/appointments', $data);
+    }
+
+    public function followUps()
+    {
+        if (!$this->session->get('is_logged_in') || $this->session->get('user_role') !== 'receptionist') {
+            return redirect()->to('login')->with('error', 'Please login as receptionist to continue');
+        }
+
+        $today = date('Y-m-d');
+        
+        // Get today's follow-ups (show all appointments for today as follow-ups)
+        // In a real system, you'd filter by appointment_type or a follow_up flag
+        $todayFollowups = $this->appointmentModel
+            ->where('appointment_date', $today)
+            ->orderBy('appointment_time', 'ASC')
+            ->findAll();
+        
+        // Get upcoming follow-ups (show all upcoming appointments)
+        $upcomingFollowups = $this->appointmentModel
+            ->where('appointment_date >', $today)
+            ->orderBy('appointment_date', 'ASC')
+            ->orderBy('appointment_time', 'ASC')
+            ->findAll();
+        
+        // Enrich follow-ups with patient and doctor details
+        $todayFollowupsWithDetails = [];
+        foreach ($todayFollowups as $followup) {
+            $patient = $this->patientModel->find($followup['patient_id']);
+            $doctor = $this->userModel->find($followup['doctor_id']);
+            $followup['patient'] = $patient;
+            $followup['doctor'] = $doctor;
+            $todayFollowupsWithDetails[] = $followup;
+        }
+        
+        $upcomingFollowupsWithDetails = [];
+        foreach ($upcomingFollowups as $followup) {
+            $patient = $this->patientModel->find($followup['patient_id']);
+            $doctor = $this->userModel->find($followup['doctor_id']);
+            $followup['patient'] = $patient;
+            $followup['doctor'] = $doctor;
+            $upcomingFollowupsWithDetails[] = $followup;
+        }
+        
+        // Count pending check-ins
+        $pendingCheckins = $this->appointmentModel
+            ->where('appointment_date', $today)
+            ->where('status', 'pending')
+            ->countAllResults();
+
+        $data = [
+            'title' => 'Follow-ups',
+            'user' => [
+                'name' => $this->session->get('user_name'),
+                'email' => $this->session->get('user_email'),
+                'role' => $this->session->get('user_role')
+            ],
+            'today_followups' => $todayFollowupsWithDetails,
+            'upcoming_followups' => $upcomingFollowupsWithDetails,
+            'stats' => [
+                'today_followups' => count($todayFollowupsWithDetails),
+                'pending_checkins' => $pendingCheckins
+            ]
+        ];
+
+        return view('reception/follow-ups', $data);
     }
 
     public function reports()
@@ -127,13 +231,54 @@ class Reception extends BaseController
             return redirect()->to('login')->with('error', 'Please login as receptionist to continue');
         }
 
+        // Get filter parameters
+        $reportType = $this->request->getGet('report_type') ?? 'new_patients';
+        $dateFrom = $this->request->getGet('date_from') ?? date('Y-m-01');
+        $dateTo = $this->request->getGet('date_to') ?? date('Y-m-d');
+        
+        // Get report data based on type
+        $reportData = [];
+        $summary = [
+            'new_patients' => 0,
+            'total_appointments' => 0,
+            'checkins' => 0
+        ];
+        
+        if ($reportType === 'new_patients') {
+            // Get new patients in date range
+            $reportData = $this->patientModel
+                ->where('DATE(created_at) >=', $dateFrom)
+                ->where('DATE(created_at) <=', $dateTo)
+                ->orderBy('created_at', 'DESC')
+                ->findAll();
+            
+            $summary['new_patients'] = count($reportData);
+        }
+        
+        // Get summary statistics
+        $summary['total_appointments'] = $this->appointmentModel
+            ->where('appointment_date >=', $dateFrom)
+            ->where('appointment_date <=', $dateTo)
+            ->countAllResults();
+        
+        $summary['checkins'] = $this->appointmentModel
+            ->where('appointment_date >=', $dateFrom)
+            ->where('appointment_date <=', $dateTo)
+            ->where('status', 'completed')
+            ->countAllResults();
+
         $data = [
             'title' => 'Reports',
             'user' => [
                 'name' => $this->session->get('user_name'),
                 'email' => $this->session->get('user_email'),
                 'role' => $this->session->get('user_role')
-            ]
+            ],
+            'report_type' => $reportType,
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'report_data' => $reportData,
+            'summary' => $summary
         ];
 
         return view('reception/reports', $data);
