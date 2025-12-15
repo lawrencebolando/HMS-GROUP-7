@@ -733,3 +733,44 @@ ORDER BY `appointment_time` ASC', [...], false)
 11 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
 12 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
 13 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-12-14 17:15:46 --> Login failed for reception@hms.com: User not found
+ERROR - 2025-12-14 17:15:55 --> Login failed for reception@hms.com: User not found
+ERROR - 2025-12-14 22:23:58 --> Error fetching recent test results: Undefined array key "name"
+ERROR - 2025-12-14 22:38:16 --> Error fetching recent test results: Undefined array key "name"
+ERROR - 2025-12-14 22:46:33 --> Error fetching recent test results: Undefined array key "name"
+CRITICAL - 2025-12-14 22:49:14 --> ParseError: Unmatched '}'
+[Method: GET, Route: logout]
+in APPPATH\Config\Routes.php on line 75.
+ 1 SYSTEMPATH\CodeIgniter.php(821): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-12-14 22:49:18 --> ParseError: Unmatched '}'
+[Method: GET, Route: logout]
+in APPPATH\Config\Routes.php on line 75.
+ 1 SYSTEMPATH\CodeIgniter.php(821): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\CodeIgniter.php(455): CodeIgniter\CodeIgniter->tryToRouteIt(null)
+ 3 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 6 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-12-14 22:49:45 --> ParseError: Unmatched '}'
+[Method: CLI, Route: db:seed/PortalAccountsSeeder]
+in APPPATH\Config\Routes.php on line 75.
+ 1 SYSTEMPATH\CLI\Console.php(41): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\Boot.php(388): CodeIgniter\CLI\Console->run()
+ 3 SYSTEMPATH\Boot.php(133): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+ 4 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+CRITICAL - 2025-12-14 22:49:50 --> ParseError: Unmatched '}'
+[Method: CLI, Route: migrate]
+in APPPATH\Config\Routes.php on line 75.
+ 1 SYSTEMPATH\CLI\Console.php(41): CodeIgniter\Router\RouteCollection->loadRoutes()
+ 2 SYSTEMPATH\Boot.php(388): CodeIgniter\CLI\Console->run()
+ 3 SYSTEMPATH\Boot.php(133): CodeIgniter\Boot::runCommand(Object(CodeIgniter\CLI\Console))
+ 4 ROOTPATH\spark(87): CodeIgniter\Boot::bootSpark(Object(Config\Paths))
+ERROR - 2025-12-14 22:50:41 --> Login failed for pharmacy.patricia@hospital.com: User not found
+ERROR - 2025-12-14 23:52:21 --> Login failed for admin@globalhospitals.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 23:52:25 --> Login failed for admin@globalhospitals.com: User exists but password doesn't match. Password verify: false
+ERROR - 2025-12-14 23:52:38 --> Login failed for pharmacy.patricia@hospital.com: User exists but password doesn't match. Password verify: false

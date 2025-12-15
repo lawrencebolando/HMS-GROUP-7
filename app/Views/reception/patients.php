@@ -37,9 +37,9 @@
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-800">Patient Records</h2>
-            <a href="<?= base_url('patients/create') ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+            <button onclick="openPatientTypeModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
                 <i class="fas fa-plus mr-2"></i>Add Patient
-            </a>
+            </button>
         </div>
         
         <!-- Search Bar -->

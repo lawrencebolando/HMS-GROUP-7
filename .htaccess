@@ -1,0 +1,18 @@
+# Disable directory browsing
+Options -Indexes +FollowSymLinks
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect any URL containing /public/ to remove it (external redirect)
+    RewriteCond %{THE_REQUEST} \s/HMS-ITE311-G7/public/([^\s?]*) [NC]
+    RewriteRule ^ /HMS-ITE311-G7/%1 [R=301,L]
+    
+    # Don't rewrite if the request is already for the public folder
+    RewriteCond %{REQUEST_URI} !^/HMS-ITE311-G7/public/
+    # Don't rewrite if the file/directory exists in root
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # Redirect all requests to the public folder (internal redirect)
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

@@ -18,9 +18,26 @@ class Auth extends BaseController
 
     public function login()
     {
-        // If already logged in, redirect to dashboard
+        // If already logged in, redirect to appropriate dashboard based on role
         if ($this->session->get('user_id')) {
-            return redirect()->to('dashboard');
+            $role = $this->session->get('user_role');
+            if ($role === 'admin') {
+                return redirect()->to('dashboard');
+            } elseif ($role === 'doctor') {
+                return redirect()->to('doctor/dashboard');
+            } elseif ($role === 'receptionist') {
+                return redirect()->to('reception/dashboard');
+            } elseif ($role === 'nurse') {
+                return redirect()->to('nurse/dashboard');
+            } elseif (in_array($role, ['lab_technician', 'lab_staff', 'lab'])) {
+                return redirect()->to('lab/dashboard');
+            } elseif (in_array($role, ['accountant', 'accounts'])) {
+                return redirect()->to('accounts/dashboard');
+            } elseif (in_array($role, ['it', 'it_staff', 'it_admin'])) {
+                return redirect()->to('it/dashboard');
+            } else {
+                return redirect()->to('dashboard');
+            }
         }
         
         return view('login');
@@ -76,26 +93,22 @@ class Auth extends BaseController
             return redirect()->to('doctor/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } elseif ($user['role'] === 'receptionist') {
             return redirect()->to('reception/dashboard')->with('success', 'Welcome back, ' . $user['name']);
-        } elseif ($user['role'] === 'nurse') {
-            return redirect()->to('nurse/dashboard')->with('success', 'Welcome back, ' . $user['name']);
-        } elseif (in_array($user['role'], ['lab_technician', 'lab_staff', 'lab'])) {
-            return redirect()->to('lab/dashboard')->with('success', 'Welcome back, ' . $user['name']);
-        } elseif (in_array($user['role'], ['accountant', 'accounts'])) {
-            return redirect()->to('accounts/dashboard')->with('success', 'Welcome back, ' . $user['name']);
-        } elseif (in_array($user['role'], ['it', 'it_staff', 'it_admin'])) {
-            return redirect()->to('it/dashboard')->with('success', 'Welcome back, ' . $user['name']);
         } else {
-            return redirect()->to('patient/dashboard')->with('success', 'Welcome back, ' . $user['name']);
+            // All other roles (nurse, lab, IT, pharmacy, patient, etc.) redirect to main dashboard
+            return redirect()->to('dashboard')->with('success', 'Welcome back, ' . $user['name']);
         }
     }
     
     public function logout()
     {
-        // Clear session data
-        $this->session->remove(['user_id', 'user_name', 'user_email', 'user_role', 'is_logged_in']);
+        // Check if session is started before trying to destroy
+        if ($this->session->has('user_id')) {
+            // Clear session data
+            $this->session->remove(['user_id', 'user_name', 'user_email', 'user_role', 'is_logged_in']);
+        }
         
-        // Destroy session
-        $this->session->destroy();
+        // Regenerate session ID for security
+        $this->session->regenerate(true);
         
         // Redirect to login
         return redirect()->to('login')->with('success', 'You have been logged out successfully.');

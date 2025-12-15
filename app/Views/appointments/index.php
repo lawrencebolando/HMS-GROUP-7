@@ -7,9 +7,11 @@
         <div class="relative z-10">
             <h1 class="text-4xl font-bold text-blue-900 mb-3">Appointment Scheduling</h1>
             <p class="text-gray-600 text-lg mb-6">Efficient appointment management system. Schedule new appointments, view daily schedules, and manage patient bookings with our intuitive calendar interface.</p>
-            <button onclick="document.getElementById('appointmentModal').classList.remove('hidden')" class="btn-primary inline-flex items-center" style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);">
-                <i class="fas fa-plus mr-2"></i>Schedule Appointment
-            </button>
+            <?php if ($user['role'] === 'receptionist'): ?>
+                <button onclick="document.getElementById('appointmentModal').classList.remove('hidden')" class="btn-primary inline-flex items-center" style="background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);">
+                    <i class="fas fa-plus mr-2"></i>Schedule Appointment
+                </button>
+            <?php endif; ?>
         </div>
         <div class="absolute top-0 right-0 w-64 h-64 opacity-10">
             <img src="https://via.placeholder.com/256x256?text=Calendar" alt="Calendar" class="w-full h-full object-contain">
@@ -45,7 +47,8 @@
         <div class="p-4 flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <i class="fas fa-calendar text-gray-400"></i>
-                <span class="text-gray-700">Appointments for <?= date('Y-m-d', strtotime($filter_date)) ?></span>
+                <span class="text-gray-700">Appointments for <?= date('F d, Y', strtotime($filter_date)) ?></span>
+                <span class="text-sm text-gray-500">(<?= count($appointments) ?> found)</span>
                 <input type="date" id="dateFilter" value="<?= esc($filter_date) ?>" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="window.location.href='<?= base_url('appointments') ?>?date=' + this.value">
             </div>
             <button class="btn-secondary inline-flex items-center">
@@ -89,8 +92,12 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="#" onclick="editAppointment(<?= $apt['id'] ?>)" class="btn-link mr-3">Edit</a>
-                                <a href="<?= base_url('appointments/delete/' . $apt['id']) ?>" class="btn-danger inline-block" onclick="return confirm('Are you sure?')">Delete</a>
+                                <?php if ($user['role'] === 'admin'): ?>
+                                    <a href="#" onclick="editAppointment(<?= $apt['id'] ?>)" class="btn-link mr-3">Edit</a>
+                                    <a href="<?= base_url('appointments/delete/' . $apt['id']) ?>" class="btn-danger inline-block" onclick="return confirm('Are you sure?')">Delete</a>
+                                <?php else: ?>
+                                    <span class="text-gray-400">View only</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -212,6 +219,13 @@ document.getElementById('patient_select').addEventListener('change', function() 
     const patientId = selectedOption.getAttribute('data-patient-id');
     document.getElementById('patient_id_display').value = patientId || '';
 });
+
+// Open modal if there are errors (form validation failed)
+<?php if (session()->getFlashdata('errors')): ?>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('appointmentModal').classList.remove('hidden');
+});
+<?php endif; ?>
 
 function editAppointment(id) {
     // TODO: Implement edit functionality

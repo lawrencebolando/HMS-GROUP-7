@@ -7,9 +7,11 @@
             <h1 class="text-3xl font-bold text-gray-800">Patient Management</h1>
             <p class="text-gray-600 mt-1">Manage all patient records</p>
         </div>
-        <a href="<?= base_url('patients/create') ?>" class="btn-primary inline-flex items-center">
-            <i class="fas fa-plus mr-2"></i>Add New Patient
-        </a>
+        <?php if ($user['role'] === 'receptionist'): ?>
+            <button onclick="openPatientTypeModal()" class="btn-primary inline-flex items-center">
+                <i class="fas fa-plus mr-2"></i>Add New Patient
+            </button>
+        <?php endif; ?>
     </div>
 
     <?php if (session()->getFlashdata('success')): ?>
@@ -58,8 +60,12 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="<?= base_url('patients/edit/' . $patient['id']) ?>" class="btn-link mr-3">Edit</a>
-                                <a href="<?= base_url('patients/delete/' . $patient['id']) ?>" class="btn-danger inline-block" onclick="return confirm('Are you sure you want to delete this patient?')">Delete</a>
+                                <?php if ($user['role'] === 'admin'): ?>
+                                    <a href="<?= base_url('patients/edit/' . $patient['id']) ?>" class="btn-link mr-3">Edit</a>
+                                    <a href="<?= base_url('patients/delete/' . $patient['id']) ?>" class="btn-danger inline-block" onclick="return confirm('Are you sure you want to delete this patient?')">Delete</a>
+                                <?php else: ?>
+                                    <span class="text-gray-400">No actions available</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -29,18 +29,41 @@ class Appointments extends BaseController
 
     public function index()
     {
-        if (!$this->session->get('is_logged_in') || $this->session->get('user_role') !== 'admin') {
-            return redirect()->to('login')->with('error', 'Access denied. Admin only.');
+        // Allow both admin and receptionist to view appointments
+        if (!$this->session->get('is_logged_in') || !in_array($this->session->get('user_role'), ['admin', 'receptionist'])) {
+            return redirect()->to('login')->with('error', 'Please login to continue');
         }
 
         // Get filter date or use today
         $filterDate = $this->request->getGet('date') ?: date('Y-m-d');
         
+        // Normalize date format to ensure consistency
+        $dateObj = \DateTime::createFromFormat('Y-m-d', $filterDate);
+        if ($dateObj) {
+            $filterDate = $dateObj->format('Y-m-d');
+        } else {
+            $filterDate = date('Y-m-d');
+        }
+        
         // Get appointments for the selected date
-        $appointments = $this->appointmentModel
+        // Use direct database query to ensure fresh data
+        $db = \Config\Database::connect();
+        $builder = $db->table('appointments');
+        $appointmentsRaw = $builder
             ->where('appointment_date', $filterDate)
             ->orderBy('appointment_time', 'ASC')
-            ->findAll();
+            ->get()
+            ->getResultArray();
+        
+        // Convert to array format expected by view
+        $appointments = [];
+        foreach ($appointmentsRaw as $apt) {
+            $appointments[] = $apt;
+        }
+        
+        // Debug: Log appointment count and query
+        log_message('debug', 'Appointments query for date ' . $filterDate . ': ' . $builder->getCompiledSelect(false));
+        log_message('debug', 'Appointments found: ' . count($appointments));
 
         // Get related data for appointments
         foreach ($appointments as &$apt) {
@@ -57,6 +80,21 @@ class Appointments extends BaseController
             $apt['patient_id_display'] = $patient ? $patient['patient_id'] : 'N/A';
         }
 
+        // Get doctors from users table (appointments use doctor_id from users table)
+        $doctors = $this->userModel->where('role', 'doctor')->where('status', 'active')->findAll();
+        
+        // Format doctors for the view (ensure they have both 'name' and 'full_name' for compatibility)
+        $formattedDoctors = [];
+        foreach ($doctors as $doctor) {
+            $formattedDoctors[] = [
+                'id' => $doctor['id'],
+                'name' => $doctor['name'],
+                'full_name' => $doctor['name'], // For compatibility with view
+                'email' => $doctor['email'] ?? '',
+                'status' => $doctor['status']
+            ];
+        }
+
         $data = [
             'title' => 'Appointment Scheduling',
             'user' => [
@@ -66,7 +104,7 @@ class Appointments extends BaseController
             'appointments' => $appointments,
             'filter_date' => $filterDate,
             'patients' => $this->patientModel->findAll(),
-            'doctors' => $this->doctorModel->where('status', 'active')->findAll(), // Use DoctorModel instead of UserModel
+            'doctors' => $formattedDoctors,
             'departments' => $this->deptModel->where('status', 'active')->findAll()
         ];
 
@@ -75,8 +113,9 @@ class Appointments extends BaseController
 
     public function store()
     {
-        if (!$this->session->get('is_logged_in') || $this->session->get('user_role') !== 'admin') {
-            return redirect()->to('login')->with('error', 'Access denied. Admin only.');
+        // Only receptionist can create appointments
+        if (!$this->session->get('is_logged_in') || $this->session->get('user_role') !== 'receptionist') {
+            return redirect()->to('login')->with('error', 'Access denied. Receptionist only.');
         }
 
         // Validate required fields
@@ -104,14 +143,62 @@ class Appointments extends BaseController
         ];
 
         try {
-            if ($this->appointmentModel->skipValidation(true)->insert($data)) {
-                return redirect()->to('appointments')->with('success', 'Appointment scheduled successfully!');
+            // Ensure date is in correct format
+            $appointmentDate = $this->request->getPost('appointment_date');
+            if ($appointmentDate) {
+                // Normalize date format to Y-m-d
+                $dateObj = \DateTime::createFromFormat('Y-m-d', $appointmentDate);
+                if ($dateObj) {
+                    $data['appointment_date'] = $dateObj->format('Y-m-d');
+                }
+            }
+            
+            // Ensure time is in correct format
+            $appointmentTime = $this->request->getPost('appointment_time');
+            if ($appointmentTime) {
+                // Normalize time format to H:i:s
+                $timeObj = \DateTime::createFromFormat('H:i:s', $appointmentTime);
+                if (!$timeObj) {
+                    $timeObj = \DateTime::createFromFormat('H:i', $appointmentTime);
+                }
+                if ($timeObj) {
+                    $data['appointment_time'] = $timeObj->format('H:i:s');
+                }
+            }
+            
+            // Log the data being inserted
+            log_message('debug', 'Attempting to insert appointment: ' . json_encode($data));
+            
+            // Insert the appointment using direct database query to ensure it works
+            $db = \Config\Database::connect();
+            $builder = $db->table('appointments');
+            $builder->insert($data);
+            $insertId = $db->insertID();
+            
+            log_message('debug', 'Appointment inserted with ID: ' . $insertId);
+            
+            if ($insertId) {
+                // Verify the appointment was actually saved by querying directly
+                $savedAppointment = $db->table('appointments')->where('id', $insertId)->get()->getRowArray();
+                log_message('debug', 'Saved appointment retrieved: ' . json_encode($savedAppointment));
+                
+                if ($savedAppointment) {
+                    // Redirect to the appointments page with the date filter set to the appointment date
+                    return redirect()->to('appointments?date=' . $data['appointment_date'])->with('success', 'Appointment scheduled successfully! ID: ' . $insertId);
+                } else {
+                    $errors = ['database' => 'Appointment was inserted but could not be retrieved. Please refresh the page.'];
+                    return redirect()->to('appointments?date=' . $data['appointment_date'])->with('errors', $errors);
+                }
             } else {
                 $dbError = $this->appointmentModel->db->error();
                 $errors = ['database' => 'Failed to save appointment: ' . ($dbError['message'] ?? 'Unknown error')];
+                if ($this->appointmentModel->errors()) {
+                    $errors = array_merge($errors, $this->appointmentModel->errors());
+                }
                 return redirect()->back()->withInput()->with('errors', $errors);
             }
         } catch (\Exception $e) {
+            log_message('error', 'Appointment creation error: ' . $e->getMessage());
             return redirect()->back()->withInput()->with('errors', ['database' => 'Error: ' . $e->getMessage()]);
         }
     }
@@ -134,7 +221,9 @@ class Appointments extends BaseController
         ];
 
         if ($this->appointmentModel->skipValidation(true)->update($id, $data)) {
-            return redirect()->to('appointments')->with('success', 'Appointment updated successfully!');
+            // Redirect to the appointments page with the date filter set to the appointment date
+            $appointmentDate = $this->request->getPost('appointment_date');
+            return redirect()->to('appointments?date=' . $appointmentDate)->with('success', 'Appointment updated successfully!');
         } else {
             return redirect()->back()->withInput()->with('errors', $this->appointmentModel->errors());
         }

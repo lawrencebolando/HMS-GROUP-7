@@ -8,12 +8,15 @@ class Pharmacy extends BaseController
     {
         $session = session();
 
-        // Require logged-in admin
+        // Allow both admin and pharmacy staff to view
         if (!$session->get('is_logged_in')) {
             return redirect()->to('login')->with('error', 'Please login to continue');
         }
 
-        if ($session->get('user_role') !== 'admin') {
+        // Allow admin to view (but not add medications)
+        // Only pharmacy staff can add medications (when pharmacy role is implemented)
+        $userRole = $session->get('user_role');
+        if ($userRole !== 'admin') {
             return redirect()->to('login')->with('error', 'Access denied. Admin only.');
         }
 

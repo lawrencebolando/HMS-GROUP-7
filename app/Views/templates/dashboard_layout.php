@@ -266,6 +266,9 @@
             });
         }
     </script>
+    <!-- Patient Type Selection Modal -->
+    <?= view('patients/patient_type_modal') ?>
+    
     <?= $this->renderSection('scripts') ?>
 </body>
 </html>

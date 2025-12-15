@@ -12,9 +12,16 @@
             <button class="btn-secondary flex items-center">
                 <i class="fas fa-file-export mr-2"></i> Export Report
             </button>
-            <button class="btn-primary flex items-center">
-                <i class="fas fa-plus mr-2"></i> Add Medication
-            </button>
+            <?php 
+            // Only show "Add Medication" button for pharmacy staff, not admin
+            // Admin can view but cannot add medications
+            $pharmacyRoles = ['pharmacy', 'pharmacist', 'pharmacy_staff'];
+            if (in_array($user['role'] ?? '', $pharmacyRoles)): 
+            ?>
+                <button class="btn-primary flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Add Medication
+                </button>
+            <?php endif; ?>
         </div>
     </div>
 

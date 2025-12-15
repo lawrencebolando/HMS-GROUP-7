@@ -80,6 +80,22 @@ class PortalAccountsSeeder extends Seeder
                 'password' => 'it1234',
                 'role' => 'it_admin',
                 'status' => 'active'
+            ],
+
+            // Pharmacy Staff Accounts
+            [
+                'name' => 'Patricia Williams',
+                'email' => 'pharmacy.patricia@hospital.com',
+                'password' => 'pharmacy123',
+                'role' => 'pharmacy',
+                'status' => 'active'
+            ],
+            [
+                'name' => 'Thomas Moore',
+                'email' => 'pharmacy.thomas@hospital.com',
+                'password' => 'pharmacy123',
+                'role' => 'pharmacist',
+                'status' => 'active'
             ]
         ];
 
@@ -130,6 +146,11 @@ class PortalAccountsSeeder extends Seeder
         echo "  Email: it.james@hospital.com\n";
         echo "  Password: it1234\n";
         echo "  URL: /it/dashboard\n\n";
+
+        echo "PHARMACY PORTAL:\n";
+        echo "  Email: pharmacy.patricia@hospital.com\n";
+        echo "  Password: pharmacy123\n";
+        echo "  URL: /pharmacy/dashboard\n\n";
     }
 }
 

@@ -11,15 +11,16 @@
             transition: all 0.3s ease;
         }
         .nav-active {
-            background-color: rgba(59, 130, 246, 0.3);
-            border-left: 4px solid #3b82f6;
+            background-color: rgba(96, 165, 250, 0.5);
         }
         .nav-item {
             color: white;
             transition: all 0.2s ease;
+            display: block;
+            text-decoration: none;
         }
         .nav-item:hover {
-            background-color: rgba(59, 130, 246, 0.2);
+            background-color: rgba(96, 165, 250, 0.2);
         }
     </style>
 </head>
@@ -29,55 +30,48 @@
     ?>
     <div class="flex h-screen overflow-hidden">
         <!-- Left Sidebar -->
-        <aside class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white sidebar-transition">
+        <aside class="w-64 bg-blue-900 text-white sidebar-transition">
             <!-- Reception Portal Header -->
-            <div class="p-4 border-b border-blue-700">
-                <h2 class="text-xl font-bold">Reception Portal</h2>
+            <div class="p-4 border-b border-blue-800">
+                <h2 class="text-xl font-bold text-white">Reception Portal</h2>
             </div>
 
             <!-- Navigation -->
             <nav class="p-4">
-                <ul class="space-y-1">
+                <ul class="space-y-0">
                     <li>
-                        <a href="<?= base_url('reception/dashboard') ?>" class="flex items-center px-4 py-3 nav-item <?= ($currentPath === 'reception/dashboard' || $currentPath === 'reception') ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-th-large w-5 mr-3"></i>
-                            <span>Dashboard</span>
+                        <a href="<?= base_url('reception/dashboard') ?>" class="block px-4 py-3 nav-item <?= ($currentPath === 'reception/dashboard' || $currentPath === 'reception') ? 'nav-active' : '' ?>">
+                            Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/patients') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/patients') !== false ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-user-plus w-5 mr-3"></i>
-                            <span>Patient Registration</span>
+                        <a href="<?= base_url('reception/patients') ?>" class="block px-4 py-3 nav-item <?= strpos($currentPath, 'reception/patients') !== false ? 'nav-active' : '' ?>">
+                            Patient Registration
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/appointments') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/appointments') !== false ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-calendar-alt w-5 mr-3"></i>
-                            <span>Appointments</span>
+                        <a href="<?= base_url('reception/appointments') ?>" class="block px-4 py-3 nav-item <?= strpos($currentPath, 'reception/appointments') !== false ? 'nav-active' : '' ?>">
+                            Appointments
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/followups') ?>" class="flex items-center px-4 py-3 nav-item <?= (strpos($currentPath, 'reception/followups') !== false || strpos($currentPath, 'reception/follow-ups') !== false) ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-redo w-5 mr-3"></i>
-                            <span>Follow-ups</span>
+                        <a href="<?= base_url('reception/followups') ?>" class="block px-4 py-3 nav-item <?= (strpos($currentPath, 'reception/followups') !== false || strpos($currentPath, 'reception/follow-ups') !== false) ? 'nav-active' : '' ?>">
+                            Follow-ups
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/reports') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/reports') !== false ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-chart-bar w-5 mr-3"></i>
-                            <span>Reports</span>
+                        <a href="<?= base_url('reception/reports') ?>" class="block px-4 py-3 nav-item <?= strpos($currentPath, 'reception/reports') !== false ? 'nav-active' : '' ?>">
+                            Reports
                         </a>
                     </li>
                     <li>
-                        <a href="<?= base_url('reception/settings') ?>" class="flex items-center px-4 py-3 nav-item <?= strpos($currentPath, 'reception/settings') !== false ? 'nav-active' : '' ?> rounded-lg">
-                            <i class="fas fa-cog w-5 mr-3"></i>
-                            <span>Settings</span>
+                        <a href="<?= base_url('reception/settings') ?>" class="block px-4 py-3 nav-item <?= strpos($currentPath, 'reception/settings') !== false ? 'nav-active' : '' ?>">
+                            Settings
                         </a>
                     </li>
-                    <li class="pt-4 border-t border-blue-700">
-                        <a href="<?= base_url('logout') ?>" class="flex items-center px-4 py-3 nav-item rounded-lg">
-                            <i class="fas fa-sign-out-alt w-5 mr-3"></i>
-                            <span>Logout</span>
+                    <li>
+                        <a href="<?= base_url('logout') ?>" class="block px-4 py-3 nav-item">
+                            Logout
                         </a>
                     </li>
                 </ul>
@@ -139,6 +133,10 @@
             }
         });
     </script>
+    
+    <!-- Patient Type Selection Modal -->
+    <?= view('patients/patient_type_modal') ?>
+    
     <?= $this->renderSection('scripts') ?>
 </body>
 </html>

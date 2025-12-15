@@ -39,7 +39,7 @@
             <div>
                 <h2 class="text-xl font-semibold text-gray-800">Today's Appointments</h2>
             </div>
-            <a href="<?= base_url('appointments') ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
+            <a href="<?= base_url('reception/appointments/create') ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm">
                 <i class="fas fa-plus mr-2"></i>New Appointment
             </a>
         </div>

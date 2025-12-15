@@ -10,27 +10,27 @@
     <!-- Report Filters -->
     <div class="bg-white rounded-lg shadow-md p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Report Filters</h3>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <form method="GET" action="<?= base_url('doctor/reports') ?>" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Report Type</label>
-                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Appointments</option>
-                    <option>Prescriptions</option>
-                    <option>Lab Requests</option>
+                <select name="report_type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="appointments" <?= ($report_type ?? 'appointments') === 'appointments' ? 'selected' : '' ?>>Appointments</option>
+                    <option value="prescriptions" <?= ($report_type ?? '') === 'prescriptions' ? 'selected' : '' ?>>Prescriptions</option>
+                    <option value="lab_requests" <?= ($report_type ?? '') === 'lab_requests' ? 'selected' : '' ?>>Lab Requests</option>
                 </select>
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Date From</label>
-                <input type="date" value="<?= date('Y-m-01') ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="date" name="date_from" value="<?= esc($date_from ?? date('Y-m-01')) ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Date To</label>
-                <input type="date" value="<?= date('Y-m-d') ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="date" name="date_to" value="<?= esc($date_to ?? date('Y-m-d')) ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="flex items-end">
-                <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Apply Filters</button>
+                <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Apply Filters</button>
             </div>
-        </div>
+        </form>
     </div>
 
     <!-- Summary -->
@@ -38,25 +38,25 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="text-center">
                 <p class="text-gray-600 text-sm mb-2">Total Appointments</p>
-                <p class="text-3xl font-bold text-gray-800"><?= count($appointments) ?></p>
+                <p class="text-3xl font-bold text-gray-800"><?= $stats['total_appointments'] ?? 0 ?></p>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="text-center">
                 <p class="text-gray-600 text-sm mb-2">Total Prescriptions</p>
-                <p class="text-3xl font-bold text-gray-800">0</p>
+                <p class="text-3xl font-bold text-gray-800"><?= $stats['total_prescriptions'] ?? 0 ?></p>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="text-center">
                 <p class="text-gray-600 text-sm mb-2">Total Lab Requests</p>
-                <p class="text-3xl font-bold text-gray-800">0</p>
+                <p class="text-3xl font-bold text-gray-800"><?= $stats['total_lab_requests'] ?? 0 ?></p>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="text-center">
                 <p class="text-gray-600 text-sm mb-2">Total Patients</p>
-                <p class="text-3xl font-bold text-gray-800"><?= count(array_unique(array_column($appointments, 'patient_id'))) ?></p>
+                <p class="text-3xl font-bold text-gray-800"><?= $stats['total_patients'] ?? 0 ?></p>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
     <!-- Appointments Report -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h3 class="text-xl font-bold text-gray-800 mb-2">Appointments Report</h3>
-        <p class="text-gray-600 mb-4">Appointments from <?= date('M d, Y', strtotime(date('Y-m-01'))) ?> to <?= date('M d, Y') ?></p>
+        <p class="text-gray-600 mb-4">Appointments from <?= isset($date_from) ? date('M d, Y', strtotime($date_from)) : date('M d, Y', strtotime(date('Y-m-01'))) ?> to <?= isset($date_to) ? date('M d, Y', strtotime($date_to)) : date('M d, Y') ?></p>
         
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -97,7 +97,15 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= esc($patient['patient_id'] ?? 'N/A') ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><?= esc(strtolower($appointment['reason'] ?? 'consultation')) ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><?= strtoupper($appointment['status'] ?? 'COMPLETED') ?></span>
+                                    <?php 
+                                    $status = strtolower($appointment['status'] ?? 'scheduled');
+                                    $statusClass = $status === 'completed' ? 'bg-green-100 text-green-800' : 
+                                                   ($status === 'cancelled' ? 'bg-red-100 text-red-800' : 
+                                                   'bg-blue-100 text-blue-800');
+                                    ?>
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full <?= $statusClass ?>">
+                                        <?= strtoupper($appointment['status'] ?? 'SCHEDULED') ?>
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($appointment['notes'] ?? '') ?></td>
                             </tr>

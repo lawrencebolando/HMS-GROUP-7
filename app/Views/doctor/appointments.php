@@ -44,7 +44,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($appointment['notes'] ?? '-') ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <button class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">View Patient</button>
+                                    <?php if ($patient): ?>
+                                        <a href="<?= base_url('doctor/patient/' . $patient['id']) ?>" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 inline-block">View Patient</a>
+                                    <?php else: ?>
+                                        <span class="px-3 py-1 bg-gray-400 text-white rounded cursor-not-allowed">View Patient</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -95,7 +99,11 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= esc($appointment['notes'] ?? '-') ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <button class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">View Patient</button>
+                                    <?php if ($patient): ?>
+                                        <a href="<?= base_url('doctor/patient/' . $patient['id']) ?>" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 inline-block">View Patient</a>
+                                    <?php else: ?>
+                                        <span class="px-3 py-1 bg-gray-400 text-white rounded cursor-not-allowed">View Patient</span>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

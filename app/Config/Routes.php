@@ -5,18 +5,20 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Auth::login');
 $routes->get('login', 'Auth::login');
 $routes->post('auth/authenticate', 'Auth::authenticate');
 $routes->get('logout', 'Auth::logout');
 $routes->get('dashboard', 'Dashboard::index');
 $routes->get('update-admin-name', 'UpdateAdmin::index');
+$routes->get('reports', 'Reports::index');
 
 // Pharmacy Management
 $routes->get('pharmacy', 'Pharmacy::index');
 
 // Patient Management Routes
 $routes->get('patients', 'Patients::index');
+$routes->get('patients/select-type', 'Patients::selectType');
 $routes->get('patients/create', 'Patients::create');
 $routes->post('patients/store', 'Patients::store');
 $routes->get('patients/edit/(:num)', 'Patients::edit/$1');
@@ -33,6 +35,19 @@ $routes->get('doctors/delete/(:num)', 'Doctors::delete/$1');
 
 // Nurse Management Routes
 $routes->get('nurses', 'Nurses::index');
+$routes->get('nurses/schedule/(:num)', 'Nurses::schedule/$1');
+$routes->post('nurses/schedule/store', 'Nurses::storeSchedule');
+$routes->get('nurses/view-schedule/(:num)', 'Nurses::viewSchedule/$1');
+$routes->get('nurses/edit-schedule/(:num)', 'Nurses::editSchedule/$1');
+$routes->post('nurses/update-schedule/(:num)', 'Nurses::updateSchedule/$1');
+
+// User Management Routes
+$routes->get('users', 'Users::index');
+$routes->get('users/create', 'Users::create');
+$routes->post('users/store', 'Users::store');
+$routes->get('users/edit/(:num)', 'Users::edit/$1');
+$routes->post('users/update/(:num)', 'Users::update/$1');
+$routes->get('users/delete/(:num)', 'Users::delete/$1');
 
 // Admissions Management Routes
 $routes->get('admissions', 'Admissions::index');
@@ -52,11 +67,7 @@ $routes->get('billing/export', 'Billing::export');
 // Laboratory Routes
 $routes->get('laboratory', 'Laboratory::index');
 
-// Portal Routes
-$routes->get('nurse/dashboard', 'NursePortal::index');
-$routes->get('lab/dashboard', 'LabPortal::index');
-$routes->get('accounts/dashboard', 'AccountsPortal::index');
-$routes->get('it/dashboard', 'ITPortal::index');
+// Portal Routes (removed pharmacy, lab, IT, nurse, and patient dashboards)
 
 // Doctor Types Routes
 $routes->get('doctor-types', 'DoctorTypes::index');
@@ -84,13 +95,18 @@ $routes->group('doctor', function($routes) {
     $routes->get('appointments', 'Doctor::appointments');
     $routes->get('inpatients', 'Doctor::inpatients');
     $routes->get('prescriptions', 'Doctor::prescriptions');
+    $routes->post('prescriptions/store', 'Doctor::storePrescription');
+    $routes->get('prescriptions/view/(:num)', 'Doctor::viewPrescription/$1');
     $routes->get('schedule', 'Doctor::schedule');
     $routes->post('schedule/add', 'Doctor::addSchedule');
     $routes->post('schedule/update', 'Doctor::updateSchedule');
     $routes->get('consultations', 'Doctor::consultations');
     $routes->get('labs', 'Doctor::labs');
+    $routes->post('labs/store', 'Doctor::storeLabRequest');
+    $routes->get('labs/view/(:num)', 'Doctor::viewLabRequest/$1');
     $routes->get('settings', 'Doctor::settings');
     $routes->get('reports', 'Doctor::reports');
+    $routes->get('patient/(:num)', 'Doctor::viewPatient/$1');
 });
 
 // Reception Portal Routes
@@ -98,6 +114,8 @@ $routes->group('reception', function($routes) {
     $routes->get('dashboard', 'Reception::dashboard');
     $routes->get('patients', 'Reception::patients');
     $routes->get('appointments', 'Reception::appointments');
+    $routes->get('appointments/create', 'Reception::createAppointment');
+    $routes->post('appointments/store', 'Reception::storeAppointment');
     $routes->get('followups', 'Reception::followUps');
     $routes->get('follow-ups', 'Reception::followUps'); // Alias with hyphen
     $routes->get('reports', 'Reception::reports');

@@ -46,7 +46,10 @@ class UpdateUsersTableRoles extends Migration
                 'accounts', 
                 'it', 
                 'it_staff', 
-                'it_admin'
+                'it_admin',
+                'pharmacy',
+                'pharmacist',
+                'pharmacy_staff'
             ) DEFAULT 'patient'";
             
             try {

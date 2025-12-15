@@ -40,7 +40,7 @@ class UserModel extends Model
         'email' => 'required|valid_email|is_unique[users.email]',
         'password' => 'required|min_length[6]',
         'name' => 'required|min_length[3]',
-        'role' => 'required|in_list[admin,doctor,receptionist,patient,nurse,lab_technician,lab_staff,lab,accountant,accounts,it,it_staff,it_admin]'
+        'role' => 'required|in_list[admin,doctor,receptionist,patient,nurse,lab_technician,lab_staff,lab,accountant,accounts,it,it_staff,it_admin,pharmacy,pharmacist,pharmacy_staff]'
     ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
